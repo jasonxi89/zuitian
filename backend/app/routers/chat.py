@@ -71,19 +71,24 @@ async def stream_chat(request: ChatRequest):
     content_blocks.append({"type": "text", "text": "\n".join(text_parts)})
 
     client = anthropic.Anthropic(api_key=CLAUDE_API_KEY)
+    models = ["claude-opus-4-6-20250527", "claude-sonnet-4-6-20250627"]
 
-    try:
-        with client.messages.stream(
-            model="claude-sonnet-4-6-20250627",
-            max_tokens=1024,
-            system=SYSTEM_PROMPT,
-            messages=[{"role": "user", "content": content_blocks}],
-        ) as stream:
-            for text in stream.text_stream:
-                yield f"data: {json.dumps({'content': text}, ensure_ascii=False)}\n\n"
-        yield "data: [DONE]\n\n"
-    except anthropic.APIError as e:
-        yield f"data: {json.dumps({'error': str(e)}, ensure_ascii=False)}\n\n"
+    for i, model in enumerate(models):
+        try:
+            with client.messages.stream(
+                model=model,
+                max_tokens=1024,
+                system=SYSTEM_PROMPT,
+                messages=[{"role": "user", "content": content_blocks}],
+            ) as stream:
+                for text in stream.text_stream:
+                    yield f"data: {json.dumps({'content': text}, ensure_ascii=False)}\n\n"
+            yield "data: [DONE]\n\n"
+            return
+        except anthropic.APIError as e:
+            if i < len(models) - 1:
+                continue
+            yield f"data: {json.dumps({'error': str(e)}, ensure_ascii=False)}\n\n"
 
 
 @router.post("/chat")
