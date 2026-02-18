@@ -47,7 +47,7 @@ async def stream_chat(request: ChatRequest):
 
     try:
         with client.messages.stream(
-            model="claude-sonnet-4-20250514",
+            model="claude-sonnet-4-6-20250627",
             max_tokens=1024,
             system=SYSTEM_PROMPT,
             messages=[{"role": "user", "content": user_message}],
