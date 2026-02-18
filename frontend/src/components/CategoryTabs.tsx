@@ -33,7 +33,7 @@ export default function CategoryTabs({ activeCategory, onCategoryChange }: Categ
         {Array.from({ length: 5 }).map((_, i) => (
           <div
             key={i}
-            className="flex-shrink-0 h-8 w-20 bg-primary-50 rounded-full animate-pulse"
+            className="flex-shrink-0 h-8 w-20 bg-white/5 rounded-full animate-pulse"
           />
         ))}
       </div>
@@ -51,7 +51,7 @@ export default function CategoryTabs({ activeCategory, onCategoryChange }: Categ
           ${
             activeCategory === ''
               ? 'bg-gradient-primary text-white shadow-md'
-              : 'glass-dark text-gray-600 hover:text-primary-600 hover:shadow-sm'
+              : 'glass-dark text-zinc-400 hover:text-primary-300 hover:shadow-sm'
           }
         `}
       >
@@ -59,7 +59,7 @@ export default function CategoryTabs({ activeCategory, onCategoryChange }: Categ
         <span
           className={`
             text-xs px-1.5 py-0.5 rounded-full
-            ${activeCategory === '' ? 'bg-white/25 text-white' : 'bg-primary-50 text-primary-400'}
+            ${activeCategory === '' ? 'bg-white/25 text-white' : 'bg-white/5 text-zinc-500'}
           `}
         >
           {totalCount}
@@ -77,7 +77,7 @@ export default function CategoryTabs({ activeCategory, onCategoryChange }: Categ
             ${
               activeCategory === cat.name
                 ? 'bg-gradient-primary text-white shadow-md'
-                : 'glass-dark text-gray-600 hover:text-primary-600 hover:shadow-sm'
+                : 'glass-dark text-zinc-400 hover:text-primary-300 hover:shadow-sm'
             }
           `}
         >
@@ -88,7 +88,7 @@ export default function CategoryTabs({ activeCategory, onCategoryChange }: Categ
               ${
                 activeCategory === cat.name
                   ? 'bg-white/25 text-white'
-                  : 'bg-primary-50 text-primary-400'
+                  : 'bg-white/5 text-zinc-500'
               }
             `}
           >

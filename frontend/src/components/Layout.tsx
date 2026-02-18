@@ -11,19 +11,20 @@ interface LayoutProps {
 const tabs: { key: Page; label: string; icon: string }[] = [
   { key: 'library', label: '话术库', icon: '💬' },
   { key: 'chat', label: 'AI助手', icon: '🤖' },
-  { key: 'random', label: '土味情话', icon: '🎲' },
+  { key: 'random', label: '甜言蜜语', icon: '🎲' },
 ]
 
 export default function Layout({ currentPage, onPageChange, children }: LayoutProps) {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Sticky top navigation */}
-      <nav className="sticky top-0 z-50 bg-gradient-primary shadow-lg">
+      <nav className="sticky top-0 z-50 glass-dark border-b border-white/5">
         <div className="max-w-4xl mx-auto px-4">
           {/* Title bar */}
           <div className="flex items-center justify-center py-3">
-            <h1 className="text-xl font-bold text-white tracking-wide">
-              💕 撩妹话术
+            <h1 className="text-xl font-bold tracking-wide">
+              <span className="text-gradient">嘴甜</span>
+              <span className="text-zinc-500 text-sm ml-2 font-normal">最甜</span>
             </h1>
           </div>
 
@@ -38,8 +39,8 @@ export default function Layout({ currentPage, onPageChange, children }: LayoutPr
                   text-sm font-medium transition-all duration-300
                   ${
                     currentPage === tab.key
-                      ? 'bg-white/25 text-white shadow-inner backdrop-blur-sm'
-                      : 'text-white/70 hover:text-white hover:bg-white/10'
+                      ? 'bg-primary-500/20 text-primary-300 shadow-[0_0_12px_rgba(99,102,241,0.15)]'
+                      : 'text-zinc-500 hover:text-zinc-300 hover:bg-white/5'
                   }
                 `}
               >

@@ -75,7 +75,7 @@ export default function PhraseLibrary() {
       <div className="relative">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <svg
-            className="h-5 w-5 text-primary-400"
+            className="h-5 w-5 text-zinc-500"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -94,14 +94,14 @@ export default function PhraseLibrary() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full pl-10 pr-4 py-3 rounded-2xl glass-dark
-                     text-gray-700 placeholder-gray-400
-                     focus:outline-none focus:ring-2 focus:ring-primary-300
+                     text-zinc-200 placeholder-zinc-500
+                     focus:outline-none focus:ring-2 focus:ring-primary-500/50
                      transition-all duration-300"
         />
         {search && (
           <button
             onClick={() => setSearch('')}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+            className="absolute inset-y-0 right-0 pr-3 flex items-center text-zinc-500 hover:text-zinc-300"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -133,9 +133,9 @@ export default function PhraseLibrary() {
               key={i}
               className="glass-dark rounded-2xl p-4 animate-pulse"
             >
-              <div className="h-4 bg-primary-100 rounded-full w-3/4 mb-3"></div>
-              <div className="h-4 bg-primary-100 rounded-full w-1/2 mb-3"></div>
-              <div className="h-3 bg-primary-50 rounded-full w-1/4"></div>
+              <div className="h-4 bg-white/5 rounded-full w-3/4 mb-3"></div>
+              <div className="h-4 bg-white/5 rounded-full w-1/2 mb-3"></div>
+              <div className="h-3 bg-white/5 rounded-full w-1/4"></div>
             </div>
           ))}
         </div>
@@ -145,10 +145,10 @@ export default function PhraseLibrary() {
       {!loading && phrases.length === 0 && (
         <div className="text-center py-12">
           <div className="text-5xl mb-4">💭</div>
-          <p className="text-gray-400 text-lg">
+          <p className="text-zinc-400 text-lg">
             {debouncedSearch ? '没有找到匹配的话术' : '暂无话术数据'}
           </p>
-          <p className="text-gray-300 text-sm mt-2">
+          <p className="text-zinc-600 text-sm mt-2">
             {debouncedSearch ? '试试换个关键词搜索' : '请先添加一些话术到数据库'}
           </p>
         </div>

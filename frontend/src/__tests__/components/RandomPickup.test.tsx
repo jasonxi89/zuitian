@@ -22,7 +22,7 @@ describe('RandomPickup', () => {
 
   it('shows hint text on initial render', () => {
     render(<RandomPickup />)
-    expect(screen.getByText('获取一条土味情话~')).toBeInTheDocument()
+    expect(screen.getByText('获取一条甜言蜜语~')).toBeInTheDocument()
   })
 
   it('shows "来一条" button initially', () => {

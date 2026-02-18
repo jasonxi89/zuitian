@@ -27,7 +27,7 @@ export default function ChatAssistant() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 0,
-      content: '你好呀~ 我是你的撩妹AI助手! 💕\n\n告诉我她说了什么，我来帮你想高情商回复~\n\n你可以选择不同的回复风格，还可以添加背景信息让回复更精准哦!',
+      content: '你好呀~ 我是你的嘴甜AI助手! ✨\n\n告诉我对方说了什么，我来帮你想高情商回复~\n\n你可以选择不同的回复风格，还可以添加背景信息让回复更精准哦!',
       isUser: false,
     },
   ])
@@ -208,7 +208,7 @@ export default function ChatAssistant() {
               ${
                 style === s.key
                   ? 'bg-gradient-primary text-white shadow-md scale-105'
-                  : 'glass-dark text-gray-600 hover:text-primary-600 hover:shadow-sm'
+                  : 'glass-dark text-zinc-400 hover:text-primary-300 hover:shadow-sm'
               }
             `}
           >
@@ -236,7 +236,7 @@ export default function ChatAssistant() {
       <div className="mb-2">
         <button
           onClick={() => setShowContext(!showContext)}
-          className="text-xs text-gray-400 hover:text-primary-500 transition-colors flex items-center gap-1"
+          className="text-xs text-zinc-500 hover:text-primary-400 transition-colors flex items-center gap-1"
         >
           <svg
             className={`w-3 h-3 transition-transform ${showContext ? 'rotate-90' : ''}`}
@@ -251,11 +251,11 @@ export default function ChatAssistant() {
         {showContext && (
           <input
             type="text"
-            placeholder="例如: 刚认识不久, 聊了一周了, 她是同事..."
+            placeholder="例如: 刚认识不久, 聊了一周了, 对方是同事..."
             value={context}
             onChange={(e) => setContext(e.target.value)}
-            className="mt-1.5 w-full px-3 py-2 rounded-xl glass-dark text-sm text-gray-600
-                       placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-200
+            className="mt-1.5 w-full px-3 py-2 rounded-xl glass-dark text-sm text-zinc-300
+                       placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-primary-500/50
                        transition-all duration-300"
           />
         )}
@@ -269,7 +269,7 @@ export default function ChatAssistant() {
               <img
                 src={img.preview}
                 alt="preview"
-                className="w-16 h-16 object-cover rounded-xl border-2 border-primary-200"
+                className="w-16 h-16 object-cover rounded-xl border-2 border-primary-500/30"
               />
               <button
                 onClick={() => removeImage(i)}
@@ -300,7 +300,7 @@ export default function ChatAssistant() {
           onClick={() => fileInputRef.current?.click()}
           disabled={isStreaming || selectedImages.length >= 3}
           className="flex-shrink-0 w-12 h-12 rounded-2xl glass-dark
-                     text-gray-400 hover:text-primary-500
+                     text-zinc-500 hover:text-primary-400
                      disabled:opacity-50 disabled:cursor-not-allowed
                      transition-all duration-300 hover:scale-105
                      flex items-center justify-center"
@@ -321,11 +321,11 @@ export default function ChatAssistant() {
             value={input}
             onChange={handleTextareaInput}
             onKeyDown={handleKeyDown}
-            placeholder={selectedImages.length > 0 ? "可选：补充说明..." : "输入她说的话，或上传聊天截图..."}
+            placeholder={selectedImages.length > 0 ? "可选：补充说明..." : "输入对方说的话，或上传聊天截图..."}
             rows={1}
-            className="w-full px-4 py-3 rounded-2xl glass-dark text-gray-700
-                       placeholder-gray-400 resize-none
-                       focus:outline-none focus:ring-2 focus:ring-primary-300
+            className="w-full px-4 py-3 rounded-2xl glass-dark text-zinc-200
+                       placeholder-zinc-500 resize-none
+                       focus:outline-none focus:ring-2 focus:ring-primary-500/50
                        transition-all duration-300"
             style={{ maxHeight: '120px' }}
           />

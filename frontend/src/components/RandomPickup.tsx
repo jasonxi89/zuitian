@@ -52,29 +52,13 @@ export default function RandomPickup() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-200px)] relative overflow-hidden">
-      {/* Background decorations */}
+      {/* Background glow orbs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="floating-heart absolute top-[10%] left-[10%] text-3xl opacity-20" style={{ animationDelay: '0s' }}>
-          💕
-        </div>
-        <div className="floating-heart absolute top-[20%] right-[15%] text-2xl opacity-15" style={{ animationDelay: '0.5s' }}>
-          💗
-        </div>
-        <div className="floating-heart absolute bottom-[30%] left-[20%] text-xl opacity-20" style={{ animationDelay: '1s' }}>
-          💖
-        </div>
-        <div className="floating-heart absolute top-[50%] right-[10%] text-2xl opacity-15" style={{ animationDelay: '1.5s' }}>
-          💘
-        </div>
-        <div className="floating-heart absolute bottom-[15%] right-[25%] text-3xl opacity-10" style={{ animationDelay: '2s' }}>
-          💝
-        </div>
-        <div className="floating-heart absolute top-[35%] left-[5%] text-xl opacity-15" style={{ animationDelay: '0.8s' }}>
-          ✨
-        </div>
-        <div className="floating-heart absolute bottom-[40%] right-[5%] text-xl opacity-15" style={{ animationDelay: '1.3s' }}>
-          ✨
-        </div>
+        <div className="glow-orb absolute top-[10%] left-[10%] w-32 h-32 bg-primary-500/20" style={{ animationDelay: '0s' }} />
+        <div className="glow-orb absolute top-[25%] right-[15%] w-24 h-24 bg-accent-400/15" style={{ animationDelay: '1s' }} />
+        <div className="glow-orb absolute bottom-[30%] left-[20%] w-20 h-20 bg-primary-400/15" style={{ animationDelay: '2s' }} />
+        <div className="glow-orb absolute top-[55%] right-[10%] w-28 h-28 bg-primary-600/10" style={{ animationDelay: '1.5s' }} />
+        <div className="glow-orb absolute bottom-[15%] right-[25%] w-24 h-24 bg-accent-500/10" style={{ animationDelay: '0.5s' }} />
       </div>
 
       {/* Card */}
@@ -83,23 +67,23 @@ export default function RandomPickup() {
           className={`flip-card-inner ${isFlipping ? 'flipped' : ''}`}
           style={{ minHeight: '200px' }}
         >
-          <div className="glass-dark rounded-3xl p-8 shadow-xl w-full">
+          <div className="glass-dark rounded-3xl p-8 shadow-xl w-full glow-border">
             {phrase ? (
               <div className="text-center relative">
                 {/* Quote marks */}
-                <div className="text-5xl text-primary-200 leading-none mb-2">"</div>
+                <div className="text-5xl text-accent-400 leading-none mb-2">"</div>
 
                 {/* Content */}
-                <p className="text-lg text-gray-700 leading-relaxed font-medium px-2">
+                <p className="text-lg text-zinc-200 leading-relaxed font-medium px-2">
                   {phrase.content}
                 </p>
 
                 {/* Bottom quote */}
-                <div className="text-5xl text-primary-200 leading-none mt-2 rotate-180">"</div>
+                <div className="text-5xl text-accent-400 leading-none mt-2 rotate-180">"</div>
 
                 {/* Category */}
                 <div className="mt-3">
-                  <span className="text-xs px-3 py-1 rounded-full bg-rose-100 text-rose-500 font-medium">
+                  <span className="text-xs px-3 py-1 rounded-full bg-primary-500/15 text-primary-300 font-medium">
                     {phrase.category}
                   </span>
                 </div>
@@ -108,8 +92,8 @@ export default function RandomPickup() {
                 <button
                   onClick={handleCopy}
                   className="mt-4 inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full
-                             text-sm text-gray-400 hover:text-primary-500
-                             hover:bg-primary-50 transition-all duration-200"
+                             text-sm text-zinc-500 hover:text-primary-400
+                             hover:bg-white/5 transition-all duration-200"
                 >
                   {copied ? (
                     <>
@@ -135,12 +119,12 @@ export default function RandomPickup() {
               </div>
             ) : (
               <div className="text-center py-4">
-                <div className="text-6xl mb-4 animate-bounce-slow">💕</div>
-                <p className="text-gray-500 text-lg">
+                <div className="text-6xl mb-4 animate-bounce-slow">✨</div>
+                <p className="text-zinc-300 text-lg">
                   点击下方按钮
                 </p>
-                <p className="text-gray-400 text-sm mt-1">
-                  获取一条土味情话~
+                <p className="text-zinc-500 text-sm mt-1">
+                  获取一条甜言蜜语~
                 </p>
               </div>
             )}
@@ -150,7 +134,7 @@ export default function RandomPickup() {
 
       {/* Error message */}
       {error && (
-        <div className="mb-4 text-rose-500 text-sm toast-enter">
+        <div className="mb-4 text-rose-400 text-sm toast-enter">
           {error}
         </div>
       )}
@@ -197,7 +181,7 @@ export default function RandomPickup() {
       </button>
 
       {/* Hint text */}
-      <p className="mt-4 text-gray-400 text-xs relative z-10">
+      <p className="mt-4 text-zinc-600 text-xs relative z-10">
         每次都是随机的哦~
       </p>
     </div>

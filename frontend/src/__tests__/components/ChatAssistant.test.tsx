@@ -13,8 +13,8 @@ import { streamChat } from '../../api/client'
 describe('ChatAssistant', () => {
   it('renders initial welcome message', () => {
     render(<ChatAssistant />)
-    // The welcome message contains "撩妹AI助手"
-    expect(screen.getByText(/撩妹AI助手/)).toBeInTheDocument()
+    // The welcome message contains "嘴甜AI助手"
+    expect(screen.getByText(/嘴甜AI助手/)).toBeInTheDocument()
   })
 
   it('renders all 4 style selector buttons', () => {
@@ -41,7 +41,7 @@ describe('ChatAssistant', () => {
     const user = userEvent.setup()
     render(<ChatAssistant />)
 
-    const textarea = screen.getByPlaceholderText(/输入她说的话/)
+    const textarea = screen.getByPlaceholderText(/输入对方说的话/)
     await user.type(textarea, 'hello')
 
     // After typing, find the send button; it should no longer be disabled
@@ -61,7 +61,7 @@ describe('ChatAssistant', () => {
     const user = userEvent.setup()
     render(<ChatAssistant />)
 
-    const textarea = screen.getByPlaceholderText(/输入她说的话/)
+    const textarea = screen.getByPlaceholderText(/输入对方说的话/)
     await user.type(textarea, 'hello')
 
     // Click the send button (it's enabled now)
@@ -87,7 +87,7 @@ describe('ChatAssistant', () => {
     const user = userEvent.setup()
     render(<ChatAssistant />)
 
-    const textarea = screen.getByPlaceholderText(/输入她说的话/)
+    const textarea = screen.getByPlaceholderText(/输入对方说的话/)
     await user.type(textarea, 'test message')
 
     const allButtons = screen.getAllByRole('button')
@@ -157,7 +157,7 @@ describe('ChatAssistant', () => {
     const user = userEvent.setup()
     render(<ChatAssistant />)
 
-    const textarea = screen.getByPlaceholderText(/输入她说的话/)
+    const textarea = screen.getByPlaceholderText(/输入对方说的话/)
     await user.type(textarea, 'hello{Enter}')
 
     await waitFor(() => {
@@ -170,7 +170,7 @@ describe('ChatAssistant', () => {
     const user = userEvent.setup()
     render(<ChatAssistant />)
 
-    const textarea = screen.getByPlaceholderText(/输入她说的话/)
+    const textarea = screen.getByPlaceholderText(/输入对方说的话/)
     await user.type(textarea, 'hello{Shift>}{Enter}{/Shift}')
 
     expect(mockStreamChat).not.toHaveBeenCalled()
@@ -185,7 +185,7 @@ describe('ChatAssistant', () => {
     const user = userEvent.setup()
     render(<ChatAssistant />)
 
-    const textarea = screen.getByPlaceholderText(/输入她说的话/)
+    const textarea = screen.getByPlaceholderText(/输入对方说的话/)
     await user.type(textarea, 'hello{Enter}')
 
     await waitFor(() => {
@@ -202,7 +202,7 @@ describe('ChatAssistant', () => {
     const user = userEvent.setup()
     render(<ChatAssistant />)
 
-    const textarea = screen.getByPlaceholderText(/输入她说的话/)
+    const textarea = screen.getByPlaceholderText(/输入对方说的话/)
     await user.type(textarea, 'my test message{Enter}')
 
     await waitFor(() => {
@@ -220,7 +220,7 @@ describe('ChatAssistant', () => {
     const user = userEvent.setup()
     render(<ChatAssistant />)
 
-    const textarea = screen.getByPlaceholderText(/输入她说的话/)
+    const textarea = screen.getByPlaceholderText(/输入对方说的话/)
     await user.type(textarea, 'hello{Enter}')
 
     await waitFor(() => {
@@ -237,7 +237,7 @@ describe('ChatAssistant', () => {
     const user = userEvent.setup()
     render(<ChatAssistant />)
 
-    const textarea = screen.getByPlaceholderText(/输入她说的话/)
+    const textarea = screen.getByPlaceholderText(/输入对方说的话/)
     await user.type(textarea, 'hello{Enter}')
 
     await waitFor(() => {

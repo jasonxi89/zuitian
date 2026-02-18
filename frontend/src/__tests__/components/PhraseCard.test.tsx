@@ -52,14 +52,14 @@ describe('PhraseCard', () => {
   it('applies correct category color for known categories', () => {
     const { container } = render(<PhraseCard phrase={mockPhrase} />)
     const badge = screen.getByText('开场白')
-    // Known category color: bg-blue-100 text-blue-600
-    expect(badge.className).toContain('bg-blue-100')
+    // Known category color: bg-blue-500/15 text-blue-400
+    expect(badge.className).toContain('bg-blue-500/15')
   })
 
   it('applies fallback color for unknown categories', () => {
     const unknownPhrase = { ...mockPhrase, category: '未知分类' }
     render(<PhraseCard phrase={unknownPhrase} />)
     const badge = screen.getByText('未知分类')
-    expect(badge.className).toContain('bg-gray-100')
+    expect(badge.className).toContain('bg-zinc-500/15')
   })
 })

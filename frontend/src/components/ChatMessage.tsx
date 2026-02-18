@@ -57,9 +57,9 @@ export default function ChatMessage({ content, isUser, isLoading, images }: Chat
       <div className="flex justify-start">
         <div className="bubble-ai px-4 py-3 max-w-[80%]">
           <div className="flex items-center gap-1.5">
-            <div className="loading-dot w-2 h-2 bg-primary-300 rounded-full"></div>
-            <div className="loading-dot w-2 h-2 bg-primary-300 rounded-full"></div>
-            <div className="loading-dot w-2 h-2 bg-primary-300 rounded-full"></div>
+            <div className="loading-dot w-2 h-2 bg-primary-400 rounded-full"></div>
+            <div className="loading-dot w-2 h-2 bg-primary-400 rounded-full"></div>
+            <div className="loading-dot w-2 h-2 bg-primary-400 rounded-full"></div>
           </div>
         </div>
       </div>
@@ -71,7 +71,7 @@ export default function ChatMessage({ content, isUser, isLoading, images }: Chat
       <div
         className={`
           relative max-w-[80%] px-4 py-3
-          ${isUser ? 'bubble-user text-white' : 'bubble-ai text-gray-700'}
+          ${isUser ? 'bubble-user text-white' : 'bubble-ai text-zinc-200'}
         `}
       >
         {/* Uploaded images */}
@@ -99,7 +99,7 @@ export default function ChatMessage({ content, isUser, isLoading, images }: Chat
             onClick={handleCopy}
             className="absolute -bottom-1 right-2 p-1 rounded-md
                        opacity-0 group-hover:opacity-100 transition-all duration-200
-                       hover:bg-gray-100 text-gray-300 hover:text-primary-500"
+                       hover:bg-white/10 text-zinc-500 hover:text-primary-400"
             title="复制"
           >
             {copied ? (

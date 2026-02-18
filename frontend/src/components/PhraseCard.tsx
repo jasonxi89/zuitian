@@ -6,18 +6,18 @@ interface PhraseCardProps {
 }
 
 const categoryColors: Record<string, string> = {
-  '开场白': 'bg-blue-100 text-blue-600',
-  '幽默回复': 'bg-amber-100 text-amber-600',
-  '土味情话': 'bg-rose-100 text-rose-600',
-  '表白句子': 'bg-red-100 text-red-600',
-  '暧昧升温': 'bg-purple-100 text-purple-600',
-  '约会邀请': 'bg-teal-100 text-teal-600',
-  '早安晚安': 'bg-orange-100 text-orange-600',
-  '节日祝福': 'bg-pink-100 text-pink-600',
+  '开场白': 'bg-blue-500/15 text-blue-400',
+  '幽默回复': 'bg-amber-500/15 text-amber-400',
+  '土味情话': 'bg-rose-500/15 text-rose-400',
+  '表白句子': 'bg-red-500/15 text-red-400',
+  '暧昧升温': 'bg-purple-500/15 text-purple-400',
+  '约会邀请': 'bg-teal-500/15 text-teal-400',
+  '早安晚安': 'bg-orange-500/15 text-orange-400',
+  '节日祝福': 'bg-pink-500/15 text-pink-400',
 }
 
 function getCategoryColor(category: string): string {
-  return categoryColors[category] || 'bg-gray-100 text-gray-600'
+  return categoryColors[category] || 'bg-zinc-500/15 text-zinc-400'
 }
 
 export default function PhraseCard({ phrase }: PhraseCardProps) {
@@ -44,7 +44,7 @@ export default function PhraseCard({ phrase }: PhraseCardProps) {
   return (
     <div className="glass-dark rounded-2xl p-4 card-hover relative group">
       {/* Content */}
-      <p className="text-gray-700 text-[15px] leading-relaxed mb-3 pr-8">
+      <p className="text-zinc-200 text-[15px] leading-relaxed mb-3 pr-8">
         {phrase.content}
       </p>
 
@@ -63,7 +63,7 @@ export default function PhraseCard({ phrase }: PhraseCardProps) {
         onClick={handleCopy}
         className="absolute top-3 right-3 p-1.5 rounded-lg
                    opacity-0 group-hover:opacity-100 transition-all duration-200
-                   hover:bg-primary-50 text-gray-400 hover:text-primary-500"
+                   hover:bg-white/10 text-zinc-500 hover:text-primary-400"
         title="复制"
       >
         {copied ? (
