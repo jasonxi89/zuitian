@@ -1,0 +1,12 @@
+services:
+  rizz:
+    image: jasonxi89/zuitian:latest
+    container_name: zuitian
+    ports:
+      - "8901:8901"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - TZ=Asia/Shanghai
+      - CLAUDE_API_KEY=${CLAUDE_API_KEY}
+    restart: unless-stopped
