@@ -17,7 +17,9 @@ STYLE_MAP = {
 
 SYSTEM_PROMPT = """你是一个专业的恋爱聊天回复助手，擅长高情商回复。
 
-用户会给你对方发来的消息，你需要根据指定的风格，生成恰好3条高情商回复建议。
+用户会给你对方发来的消息（文字或聊天截图），你需要根据指定的风格，生成恰好3条高情商回复建议。
+
+如果用户上传了聊天截图，请仔细识别截图中的对话内容，理解对方说了什么，然后生成合适的回复。
 
 回复要求：
 1. 每条回复要自然、有趣、不油腻
@@ -38,10 +40,35 @@ async def stream_chat(request: ChatRequest):
         yield f"data: {json.dumps({'error': 'API key not configured'})}\n\n"
         return
 
+    if not request.their_message.strip() and not request.images:
+        yield f"data: {json.dumps({'error': '请输入文字或上传截图'})}\n\n"
+        return
+
     style_label = STYLE_MAP.get(request.style, "幽默型")
-    user_message = f"对方发来的消息：「{request.their_message}」\n\n请用【{style_label}】风格生成3条回复。"
+
+    # Build content blocks: images first, then text
+    content_blocks = []
+    if request.images:
+        for img in request.images:
+            content_blocks.append({
+                "type": "image",
+                "source": {
+                    "type": "base64",
+                    "media_type": img.media_type,
+                    "data": img.data,
+                },
+            })
+
+    text_parts = []
+    if request.their_message.strip():
+        text_parts.append(f"对方发来的消息：「{request.their_message}」")
+    if request.images:
+        text_parts.append("（请结合上面的聊天截图理解对方的意思）")
+    text_parts.append(f"\n请用【{style_label}】风格生成3条回复。")
     if request.context:
-        user_message += f"\n\n聊天背景：{request.context}"
+        text_parts.append(f"\n聊天背景：{request.context}")
+
+    content_blocks.append({"type": "text", "text": "\n".join(text_parts)})
 
     client = anthropic.Anthropic(api_key=CLAUDE_API_KEY)
 
@@ -50,7 +77,7 @@ async def stream_chat(request: ChatRequest):
             model="claude-sonnet-4-6-20250627",
             max_tokens=1024,
             system=SYSTEM_PROMPT,
-            messages=[{"role": "user", "content": user_message}],
+            messages=[{"role": "user", "content": content_blocks}],
         ) as stream:
             for text in stream.text_stream:
                 yield f"data: {json.dumps({'content': text}, ensure_ascii=False)}\n\n"

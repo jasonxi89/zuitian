@@ -21,10 +21,16 @@ export interface Category {
   count: number
 }
 
+export interface ImageContent {
+  data: string
+  media_type: string
+}
+
 export interface ChatRequest {
   their_message: string
   style?: string
   context?: string
+  images?: ImageContent[]
 }
 
 export async function fetchPhrases(params: PhraseParams = {}): Promise<Phrase[]> {

@@ -4,9 +4,10 @@ interface ChatMessageProps {
   content: string
   isUser: boolean
   isLoading?: boolean
+  images?: { preview: string }[]
 }
 
-export default function ChatMessage({ content, isUser, isLoading }: ChatMessageProps) {
+export default function ChatMessage({ content, isUser, isLoading, images }: ChatMessageProps) {
   const [copied, setCopied] = useState(false)
 
   const handleCopy = async () => {
@@ -73,6 +74,20 @@ export default function ChatMessage({ content, isUser, isLoading }: ChatMessageP
           ${isUser ? 'bubble-user text-white' : 'bubble-ai text-gray-700'}
         `}
       >
+        {/* Uploaded images */}
+        {isUser && images && images.length > 0 && (
+          <div className="flex gap-2 flex-wrap mb-2">
+            {images.map((img, i) => (
+              <img
+                key={i}
+                src={img.preview}
+                alt="uploaded"
+                className="rounded-lg max-w-[200px] max-h-[200px] object-cover"
+              />
+            ))}
+          </div>
+        )}
+
         {/* Message content */}
         <div className="text-[15px] leading-relaxed whitespace-pre-wrap break-words">
           {formatContent(content)}

@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import List, Optional
 from pydantic import BaseModel, Field
 
 
@@ -14,10 +14,16 @@ class PhraseOut(BaseModel):
     model_config = {"from_attributes": True}
 
 
+class ImageContent(BaseModel):
+    data: str  # base64 encoded (without data: prefix)
+    media_type: str = "image/jpeg"
+
+
 class ChatRequest(BaseModel):
-    their_message: str
+    their_message: str = ""
     style: str = Field(default="humorous")
     context: Optional[str] = None
+    images: Optional[List[ImageContent]] = None
 
 
 class CategoryOut(BaseModel):
