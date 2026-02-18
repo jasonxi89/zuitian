@@ -29,3 +29,9 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Test coverage
+.coverage
+coverage/
+backend/.coverage
+frontend/coverage/
