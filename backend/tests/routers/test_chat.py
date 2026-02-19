@@ -308,7 +308,7 @@ def test_chat_with_message_and_image(client, monkeypatch):
 # Model selection and fallback
 # ---------------------------------------------------------------------------
 
-def test_chat_uses_opus_as_primary_model(client, monkeypatch):
+def test_chat_uses_sonnet_as_primary_model(client, monkeypatch):
     monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
     with patch("app.routers.chat.anthropic.Anthropic") as mock_cls:
         mock_client = MagicMock()
@@ -317,10 +317,10 @@ def test_chat_uses_opus_as_primary_model(client, monkeypatch):
 
         client.post("/api/chat", json={"their_message": "hi"})
         call_kwargs = mock_client.messages.stream.call_args[1]
-        assert call_kwargs["model"] == "claude-opus-4-6-20250527"
+        assert call_kwargs["model"] == "claude-sonnet-4-6"
 
 
-def test_chat_fallback_to_sonnet_on_api_error(client, monkeypatch):
+def test_chat_fallback_to_haiku_on_api_error(client, monkeypatch):
     import anthropic as anthropic_module
     monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
     with patch("app.routers.chat.anthropic.Anthropic") as mock_cls:
@@ -333,11 +333,11 @@ def test_chat_fallback_to_sonnet_on_api_error(client, monkeypatch):
             nonlocal call_count
             call_count += 1
             if call_count == 1:
-                # opus fails
+                # sonnet fails
                 raise anthropic_module.APIError(
                     message="overloaded", request=MagicMock(), body=None
                 )
-            # sonnet succeeds
+            # haiku succeeds
             return make_mock_stream(["fallback"])
 
         mock_client.messages.stream.side_effect = side_effect
@@ -345,9 +345,9 @@ def test_chat_fallback_to_sonnet_on_api_error(client, monkeypatch):
         resp = client.post("/api/chat", json={"their_message": "hello"})
         assert resp.status_code == 200
         assert mock_client.messages.stream.call_count == 2
-        # Second call should use sonnet
+        # Second call should use haiku
         second_call_kwargs = mock_client.messages.stream.call_args_list[1][1]
-        assert second_call_kwargs["model"] == "claude-sonnet-4-6-20250627"
+        assert second_call_kwargs["model"] == "claude-haiku-4-5-20251001"
 
 
 def test_chat_fallback_response_has_done(client, monkeypatch):
