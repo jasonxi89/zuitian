@@ -23,7 +23,7 @@ def list_phrases(
         query = query.filter(Phrase.category == category)
     if search:
         query = query.filter(Phrase.content.like(f"%{search}%"))
-    return query.order_by(Phrase.id).offset(offset).limit(limit).all()
+    return query.order_by(Phrase.created_at.desc()).offset(offset).limit(limit).all()
 
 
 @router.get("/random", response_model=PhraseOut)

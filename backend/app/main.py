@@ -9,6 +9,7 @@ from app.database import engine, Base, SessionLocal
 from app.models import Phrase  # noqa: F401 - ensure model is registered
 from app.seed_data import seed_phrases
 from app.routers import phrases, chat
+from app.config import AGENT_ENABLED
 
 
 @asynccontextmanager
@@ -20,8 +21,13 @@ async def lifespan(app: FastAPI):
         seed_phrases(db)
     finally:
         db.close()
+    if AGENT_ENABLED:
+        from app.scheduler import start_scheduler, shutdown_scheduler
+        start_scheduler()
     yield
-    # Shutdown: nothing to clean up
+    if AGENT_ENABLED:
+        from app.scheduler import shutdown_scheduler
+        shutdown_scheduler()
 
 
 app = FastAPI(
