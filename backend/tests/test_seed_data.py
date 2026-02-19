@@ -36,7 +36,7 @@ def test_seed_phrases_has_8_categories(db):
     categories = db.execute(
         select(Phrase.category).distinct()
     ).scalars().all()
-    assert len(categories) == 8
+    assert len(categories) == 12
 
 
 def test_seed_phrases_expected_categories(db):
@@ -51,6 +51,7 @@ def test_seed_phrases_expected_categories(db):
     expected = {
         "开场白", "幽默回复", "土味情话", "表白句子",
         "暧昧升温", "约会邀请", "早安晚安", "节日祝福",
+        "高甜语录", "反差萌", "深夜emo", "神回复",
     }
     assert categories == expected
 
@@ -79,9 +80,12 @@ def test_seed_phrases_does_not_seed_if_data_exists(db):
 
     seed_phrases(db)
 
-    # Should still only have 1 phrase (seed was skipped)
+    # Should have 1 existing + new categories added
     count = db.query(Phrase).count()
-    assert count == 1
+    # New categories (not "开场白") should be added
+    new_categories = db.query(Phrase.category).distinct().filter(Phrase.category != "开场白").count()
+    assert new_categories > 0
+    assert count > 1
 
 
 def test_seed_phrases_cheesy_lines_marked_as_pickup(db):

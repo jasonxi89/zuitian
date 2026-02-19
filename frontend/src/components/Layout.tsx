@@ -24,7 +24,7 @@ export default function Layout({ currentPage, onPageChange, children }: LayoutPr
           <div className="flex items-center justify-center py-3">
             <h1 className="text-xl font-bold tracking-wide">
               <span className="text-gradient">嘴甜</span>
-              <span className="text-zinc-500 text-sm ml-2 font-normal">最甜</span>
+              <span className="text-zinc-500 text-sm ml-2 font-normal">aka 最舔🐶</span>
             </h1>
           </div>
 

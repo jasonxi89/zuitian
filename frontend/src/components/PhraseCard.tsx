@@ -14,6 +14,10 @@ const categoryColors: Record<string, string> = {
   '约会邀请': 'bg-teal-500/15 text-teal-400',
   '早安晚安': 'bg-orange-500/15 text-orange-400',
   '节日祝福': 'bg-pink-500/15 text-pink-400',
+  '高甜语录': 'bg-fuchsia-500/15 text-fuchsia-400',
+  '反差萌': 'bg-cyan-500/15 text-cyan-400',
+  '深夜emo': 'bg-indigo-500/15 text-indigo-400',
+  '神回复': 'bg-emerald-500/15 text-emerald-400',
 }
 
 function getCategoryColor(category: string): string {
