@@ -71,7 +71,7 @@ async def stream_chat(request: ChatRequest):
     content_blocks.append({"type": "text", "text": "\n".join(text_parts)})
 
     client = anthropic.Anthropic(api_key=CLAUDE_API_KEY)
-    models = ["claude-opus-4-6-20250527", "claude-sonnet-4-6-20250627"]
+    models = ["claude-sonnet-4-6", "claude-haiku-4-5-20251001"]
 
     for i, model in enumerate(models):
         try:
