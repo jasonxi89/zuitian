@@ -41,7 +41,7 @@ export async function fetchPhrases(params: PhraseParams = {}): Promise<Phrase[]>
   if (params.limit !== undefined) searchParams.set('limit', String(params.limit))
 
   const query = searchParams.toString()
-  const url = `${BASE_URL}/api/phrases${query ? `?${query}` : ''}`
+  const url = `${BASE_URL}/api/phrases/${query ? `?${query}` : ''}`
 
   const response = await fetch(url)
   if (!response.ok) {

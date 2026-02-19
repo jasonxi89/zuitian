@@ -56,9 +56,9 @@ static_dir = os.path.join(os.path.dirname(__file__), "..", "static")
 # Catch-all route for SPA: serve static files or index.html
 @app.get("/{full_path:path}")
 async def serve_spa(request: Request, full_path: str):
-    # Skip API routes
-    if full_path.startswith("api"):
-        return JSONResponse(status_code=404, content={"detail": "Not found"})
+    # Skip API routes - let FastAPI return proper 404/redirect
+    if full_path.startswith("api/") or full_path == "api":
+        return JSONResponse(status_code=404, content={"detail": "API endpoint not found"})
 
     # Try to serve the exact file from static directory (JS, CSS, images)
     if full_path:

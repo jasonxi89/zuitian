@@ -10,7 +10,7 @@ describe('fetchPhrases', () => {
     } as Response)
 
     await fetchPhrases()
-    expect(mockFetch).toHaveBeenCalledWith('/api/phrases')
+    expect(mockFetch).toHaveBeenCalledWith('/api/phrases/')
   })
 
   it('includes category param', async () => {
@@ -18,7 +18,7 @@ describe('fetchPhrases', () => {
     mockFetch.mockResolvedValueOnce({ ok: true, json: async () => [] } as Response)
 
     await fetchPhrases({ category: '开场白' })
-    expect(mockFetch).toHaveBeenCalledWith('/api/phrases?category=%E5%BC%80%E5%9C%BA%E7%99%BD')
+    expect(mockFetch).toHaveBeenCalledWith('/api/phrases/?category=%E5%BC%80%E5%9C%BA%E7%99%BD')
   })
 
   it('includes search param', async () => {
