@@ -1,6 +1,7 @@
 services:
   rizz:
     image: jasonxi89/zuitian:latest
+    pull_policy: always
     container_name: zuitian
     ports:
       - "8901:8901"
