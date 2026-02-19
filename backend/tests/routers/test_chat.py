@@ -317,7 +317,7 @@ def test_chat_uses_sonnet_as_primary_model(client, monkeypatch):
 
         client.post("/api/chat", json={"their_message": "hi"})
         call_kwargs = mock_client.messages.stream.call_args[1]
-        assert call_kwargs["model"] == "claude-sonnet-4-6"
+        assert call_kwargs["model"] == "claude-opus-4-6"
 
 
 def test_chat_fallback_to_haiku_on_api_error(client, monkeypatch):
@@ -347,7 +347,7 @@ def test_chat_fallback_to_haiku_on_api_error(client, monkeypatch):
         assert mock_client.messages.stream.call_count == 2
         # Second call should use haiku
         second_call_kwargs = mock_client.messages.stream.call_args_list[1][1]
-        assert second_call_kwargs["model"] == "claude-haiku-4-5-20251001"
+        assert second_call_kwargs["model"] == "claude-sonnet-4-6"
 
 
 def test_chat_fallback_response_has_done(client, monkeypatch):
