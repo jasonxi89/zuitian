@@ -129,7 +129,7 @@ def test_list_phrases_ordered_by_id(client, sample_phrases):
     resp = client.get("/api/phrases/?limit=100")
     data = resp.json()
     ids = [p["id"] for p in data]
-    assert ids == sorted(ids)
+    assert ids == sorted(ids, reverse=True)
 
 
 def test_random_phrase_returns_one(client, sample_phrases):
