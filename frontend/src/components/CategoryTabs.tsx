@@ -33,7 +33,7 @@ export default function CategoryTabs({ activeCategory, onCategoryChange }: Categ
         {Array.from({ length: 5 }).map((_, i) => (
           <div
             key={i}
-            className="flex-shrink-0 h-8 w-20 bg-white/5 rounded-full animate-pulse"
+            className="flex-shrink-0 h-9 w-20 bg-stone-200 dark:bg-stone-800 rounded-full animate-pulse"
           />
         ))}
       </div>
@@ -41,17 +41,19 @@ export default function CategoryTabs({ activeCategory, onCategoryChange }: Categ
   }
 
   return (
-    <div className="flex gap-2 overflow-x-auto hide-scrollbar py-1 -mx-1 px-1">
+    <div className="flex gap-2 overflow-x-auto hide-scrollbar py-1 -mx-1 px-1" role="tablist">
       {/* "All" tab */}
       <button
+        role="tab"
+        aria-selected={activeCategory === ''}
         onClick={() => onCategoryChange('')}
         className={`
-          flex-shrink-0 flex items-center gap-1.5 px-4 py-1.5 rounded-full
-          text-sm font-medium transition-all duration-300
+          flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full
+          text-sm font-medium transition-all duration-200
           ${
             activeCategory === ''
-              ? 'bg-gradient-primary text-white shadow-md'
-              : 'glass-dark text-zinc-400 hover:text-primary-300 hover:shadow-sm'
+              ? 'bg-teal-600 text-white dark:bg-teal-700'
+              : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-700'
           }
         `}
       >
@@ -59,7 +61,7 @@ export default function CategoryTabs({ activeCategory, onCategoryChange }: Categ
         <span
           className={`
             text-xs px-1.5 py-0.5 rounded-full
-            ${activeCategory === '' ? 'bg-white/25 text-white' : 'bg-white/5 text-zinc-500'}
+            ${activeCategory === '' ? 'bg-teal-500/20 text-teal-100' : 'bg-stone-200 dark:bg-stone-700 text-stone-500 dark:text-stone-400'}
           `}
         >
           {totalCount}
@@ -70,14 +72,16 @@ export default function CategoryTabs({ activeCategory, onCategoryChange }: Categ
       {categories.map((cat) => (
         <button
           key={cat.name}
+          role="tab"
+          aria-selected={activeCategory === cat.name}
           onClick={() => onCategoryChange(cat.name)}
           className={`
-            flex-shrink-0 flex items-center gap-1.5 px-4 py-1.5 rounded-full
-            text-sm font-medium transition-all duration-300
+            flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full
+            text-sm font-medium transition-all duration-200
             ${
               activeCategory === cat.name
-                ? 'bg-gradient-primary text-white shadow-md'
-                : 'glass-dark text-zinc-400 hover:text-primary-300 hover:shadow-sm'
+                ? 'bg-teal-600 text-white dark:bg-teal-700'
+                : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-700'
             }
           `}
         >
@@ -87,8 +91,8 @@ export default function CategoryTabs({ activeCategory, onCategoryChange }: Categ
               text-xs px-1.5 py-0.5 rounded-full
               ${
                 activeCategory === cat.name
-                  ? 'bg-white/25 text-white'
-                  : 'bg-white/5 text-zinc-500'
+                  ? 'bg-teal-500/20 text-teal-100'
+                  : 'bg-stone-200 dark:bg-stone-700 text-stone-500 dark:text-stone-400'
               }
             `}
           >

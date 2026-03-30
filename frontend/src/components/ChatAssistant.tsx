@@ -207,8 +207,8 @@ export default function ChatAssistant() {
               transition-all duration-300
               ${
                 style === s.key
-                  ? 'bg-gradient-primary text-white shadow-md scale-105'
-                  : 'glass-dark text-zinc-400 hover:text-primary-300 hover:shadow-sm'
+                  ? 'bg-teal-600 text-white shadow-sm dark:bg-teal-700'
+                  : 'bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 border border-stone-200 dark:border-stone-700 hover:border-teal-300 dark:hover:border-teal-600'
               }
             `}
           >
@@ -219,7 +219,11 @@ export default function ChatAssistant() {
       </div>
 
       {/* Chat messages area */}
-      <div className="flex-1 overflow-y-auto chat-scroll rounded-2xl glass p-4 space-y-3 mb-3">
+      <div
+        className="flex-1 overflow-y-auto chat-scroll rounded-2xl bg-stone-100 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-700 p-4 space-y-3 mb-3"
+        aria-live="polite"
+        role="log"
+      >
         {messages.map((msg) => (
           <ChatMessage
             key={msg.id}
@@ -236,7 +240,7 @@ export default function ChatAssistant() {
       <div className="mb-2">
         <button
           onClick={() => setShowContext(!showContext)}
-          className="text-xs text-zinc-500 hover:text-primary-400 transition-colors flex items-center gap-1"
+          className="text-xs text-stone-500 hover:text-teal-600 dark:text-stone-400 dark:hover:text-teal-400 transition-colors flex items-center gap-1"
         >
           <svg
             className={`w-3 h-3 transition-transform ${showContext ? 'rotate-90' : ''}`}
@@ -254,8 +258,8 @@ export default function ChatAssistant() {
             placeholder="例如: 刚认识不久, 聊了一周了, 对方是同事..."
             value={context}
             onChange={(e) => setContext(e.target.value)}
-            className="mt-1.5 w-full px-3 py-2 rounded-xl glass-dark text-sm text-zinc-300
-                       placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-primary-500/50
+            className="mt-1.5 w-full px-3 py-2 rounded-xl bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-sm text-stone-800 dark:text-stone-200
+                       placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500
                        transition-all duration-300"
           />
         )}
@@ -268,8 +272,8 @@ export default function ChatAssistant() {
             <div key={i} className="relative group/img">
               <img
                 src={img.preview}
-                alt="preview"
-                className="w-16 h-16 object-cover rounded-xl border-2 border-primary-500/30"
+                alt="聊天截图预览"
+                className="w-16 h-16 object-cover rounded-xl border-2 border-teal-500/30 dark:border-teal-400/30"
               />
               <button
                 onClick={() => removeImage(i)}
@@ -299,12 +303,14 @@ export default function ChatAssistant() {
         <button
           onClick={() => fileInputRef.current?.click()}
           disabled={isStreaming || selectedImages.length >= 3}
-          className="flex-shrink-0 w-12 h-12 rounded-2xl glass-dark
-                     text-zinc-500 hover:text-primary-400
+          aria-label="上传聊天截图"
+          className="flex-shrink-0 w-12 h-12 rounded-2xl
+                     bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700
+                     text-stone-500 hover:text-teal-600 dark:text-stone-400 dark:hover:text-teal-400
+                     hover:border-teal-300 dark:hover:border-teal-600
                      disabled:opacity-50 disabled:cursor-not-allowed
-                     transition-all duration-300 hover:scale-105
+                     transition-all duration-300
                      flex items-center justify-center"
-          title="上传聊天截图"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -316,16 +322,20 @@ export default function ChatAssistant() {
           </svg>
         </button>
         <div className="flex-1 relative">
+          <label htmlFor="chat-input" className="sr-only">输入消息</label>
           <textarea
+            id="chat-input"
             ref={inputRef}
             value={input}
             onChange={handleTextareaInput}
             onKeyDown={handleKeyDown}
             placeholder={selectedImages.length > 0 ? "可选：补充说明..." : "输入对方说的话，或上传聊天截图..."}
             rows={1}
-            className="w-full px-4 py-3 rounded-2xl glass-dark text-zinc-200
-                       placeholder-zinc-500 resize-none
-                       focus:outline-none focus:ring-2 focus:ring-primary-500/50
+            className="w-full px-4 py-3 rounded-2xl
+                       bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700
+                       text-stone-800 dark:text-stone-200
+                       placeholder-stone-400 dark:placeholder-stone-500 resize-none
+                       focus:outline-none focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500
                        transition-all duration-300"
             style={{ maxHeight: '120px' }}
           />
@@ -333,14 +343,16 @@ export default function ChatAssistant() {
         <button
           onClick={handleSend}
           disabled={(!input.trim() && selectedImages.length === 0) || isStreaming}
-          className="flex-shrink-0 w-12 h-12 rounded-2xl bg-gradient-primary
+          aria-label="发送消息"
+          className="flex-shrink-0 w-12 h-12 rounded-2xl
+                     bg-teal-600 hover:bg-teal-700 dark:bg-teal-700 dark:hover:bg-teal-600
                      text-white shadow-md hover:shadow-lg
                      disabled:opacity-50 disabled:cursor-not-allowed
-                     transition-all duration-300 hover:scale-105
+                     transition-all duration-300
                      flex items-center justify-center"
         >
           {isStreaming ? (
-            <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+            <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24" role="status">
               <circle
                 className="opacity-25"
                 cx="12"

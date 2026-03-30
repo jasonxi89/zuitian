@@ -73,9 +73,10 @@ export default function PhraseLibrary() {
     <div className="space-y-4">
       {/* Search bar */}
       <div className="relative">
+        <label htmlFor="phrase-search" className="sr-only">搜索话术</label>
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <svg
-            className="h-5 w-5 text-zinc-500"
+            className="h-5 w-5 text-stone-400 dark:text-stone-500"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -89,19 +90,23 @@ export default function PhraseLibrary() {
           </svg>
         </div>
         <input
+          id="phrase-search"
           type="text"
           placeholder="搜索话术..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-10 pr-4 py-3 rounded-2xl glass-dark
-                     text-zinc-200 placeholder-zinc-500
-                     focus:outline-none focus:ring-2 focus:ring-primary-500/50
-                     transition-all duration-300"
+          className="w-full pl-10 pr-4 py-3 rounded-2xl
+                     bg-white dark:bg-stone-800
+                     border border-stone-200 dark:border-stone-700
+                     text-stone-800 dark:text-stone-200
+                     placeholder-stone-400 dark:placeholder-stone-500
+                     focus:outline-none focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500
+                     transition-all duration-200"
         />
         {search && (
           <button
             onClick={() => setSearch('')}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center text-zinc-500 hover:text-zinc-300"
+            className="absolute inset-y-0 right-0 pr-3 flex items-center text-stone-400 hover:text-stone-600 dark:text-stone-500 dark:hover:text-stone-300"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -131,11 +136,11 @@ export default function PhraseLibrary() {
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
-              className="glass-dark rounded-2xl p-4 animate-pulse"
+              className="bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-2xl p-4 animate-pulse"
             >
-              <div className="h-4 bg-white/5 rounded-full w-3/4 mb-3"></div>
-              <div className="h-4 bg-white/5 rounded-full w-1/2 mb-3"></div>
-              <div className="h-3 bg-white/5 rounded-full w-1/4"></div>
+              <div className="h-4 bg-stone-200 dark:bg-stone-700 rounded-full w-3/4 mb-3"></div>
+              <div className="h-4 bg-stone-200 dark:bg-stone-700 rounded-full w-1/2 mb-3"></div>
+              <div className="h-3 bg-stone-200 dark:bg-stone-700 rounded-full w-1/4"></div>
             </div>
           ))}
         </div>
@@ -145,10 +150,10 @@ export default function PhraseLibrary() {
       {!loading && phrases.length === 0 && (
         <div className="text-center py-12">
           <div className="text-5xl mb-4">💭</div>
-          <p className="text-zinc-400 text-lg">
+          <p className="text-stone-500 dark:text-stone-400 text-lg">
             {debouncedSearch ? '没有找到匹配的话术' : '暂无话术数据'}
           </p>
-          <p className="text-zinc-600 text-sm mt-2">
+          <p className="text-stone-400 dark:text-stone-500 text-sm mt-2">
             {debouncedSearch ? '试试换个关键词搜索' : '请先添加一些话术到数据库'}
           </p>
         </div>
@@ -160,10 +165,11 @@ export default function PhraseLibrary() {
           <button
             onClick={handleLoadMore}
             disabled={loading}
-            className="px-8 py-2.5 rounded-full bg-gradient-primary text-white
-                       font-medium shadow-md hover:shadow-lg
+            className="px-8 py-2.5 rounded-full
+                       bg-teal-600 hover:bg-teal-700 dark:bg-teal-700 dark:hover:bg-teal-600
+                       text-white font-medium shadow-md hover:shadow-lg
                        disabled:opacity-50 disabled:cursor-not-allowed
-                       transition-all duration-300 hover:scale-105"
+                       transition-all duration-200"
           >
             {loading ? (
               <span className="flex items-center gap-2">
@@ -196,9 +202,9 @@ export default function PhraseLibrary() {
       {loading && phrases.length > 0 && (
         <div className="text-center py-4">
           <div className="inline-flex items-center gap-1">
-            <div className="loading-dot w-2 h-2 bg-primary-400 rounded-full"></div>
-            <div className="loading-dot w-2 h-2 bg-primary-400 rounded-full"></div>
-            <div className="loading-dot w-2 h-2 bg-primary-400 rounded-full"></div>
+            <div className="loading-dot w-2 h-2 bg-teal-500 dark:bg-teal-400 rounded-full"></div>
+            <div className="loading-dot w-2 h-2 bg-teal-500 dark:bg-teal-400 rounded-full"></div>
+            <div className="loading-dot w-2 h-2 bg-teal-500 dark:bg-teal-400 rounded-full"></div>
           </div>
         </div>
       )}

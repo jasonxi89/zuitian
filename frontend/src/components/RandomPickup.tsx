@@ -52,38 +52,29 @@ export default function RandomPickup() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-200px)] relative overflow-hidden">
-      {/* Background glow orbs */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="glow-orb absolute top-[10%] left-[10%] w-32 h-32 bg-primary-500/20" style={{ animationDelay: '0s' }} />
-        <div className="glow-orb absolute top-[25%] right-[15%] w-24 h-24 bg-accent-400/15" style={{ animationDelay: '1s' }} />
-        <div className="glow-orb absolute bottom-[30%] left-[20%] w-20 h-20 bg-primary-400/15" style={{ animationDelay: '2s' }} />
-        <div className="glow-orb absolute top-[55%] right-[10%] w-28 h-28 bg-primary-600/10" style={{ animationDelay: '1.5s' }} />
-        <div className="glow-orb absolute bottom-[15%] right-[25%] w-24 h-24 bg-accent-500/10" style={{ animationDelay: '0.5s' }} />
-      </div>
-
       {/* Card */}
       <div className="flip-card w-full max-w-sm mb-8 relative z-10">
         <div
           className={`flip-card-inner ${isFlipping ? 'flipped' : ''}`}
           style={{ minHeight: '200px' }}
         >
-          <div className="glass-dark rounded-3xl p-8 shadow-xl w-full glow-border">
+          <div className="bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 shadow-lg dark:shadow-stone-900/50 rounded-3xl p-8 w-full">
             {phrase ? (
               <div className="text-center relative">
                 {/* Quote marks */}
-                <div className="text-5xl text-accent-400 leading-none mb-2">"</div>
+                <div className="text-5xl text-amber-500 dark:text-amber-400 leading-none mb-2">"</div>
 
                 {/* Content */}
-                <p className="text-lg text-zinc-200 leading-relaxed font-medium px-2">
+                <p className="text-lg text-stone-700 dark:text-stone-200 leading-relaxed font-medium px-2">
                   {phrase.content}
                 </p>
 
                 {/* Bottom quote */}
-                <div className="text-5xl text-accent-400 leading-none mt-2 rotate-180">"</div>
+                <div className="text-5xl text-amber-500 dark:text-amber-400 leading-none mt-2 rotate-180">"</div>
 
                 {/* Category */}
                 <div className="mt-3">
-                  <span className="text-xs px-3 py-1 rounded-full bg-primary-500/15 text-primary-300 font-medium">
+                  <span className="text-xs px-3 py-1 rounded-full bg-teal-50 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400 font-medium">
                     {phrase.category}
                   </span>
                 </div>
@@ -92,15 +83,15 @@ export default function RandomPickup() {
                 <button
                   onClick={handleCopy}
                   className="mt-4 inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full
-                             text-sm text-zinc-500 hover:text-primary-400
-                             hover:bg-white/5 transition-all duration-200"
+                             text-sm text-stone-400 hover:text-teal-600 dark:text-stone-500 dark:hover:text-teal-400
+                             hover:bg-stone-100 dark:hover:bg-stone-700/50 transition-all duration-200"
                 >
                   {copied ? (
                     <>
-                      <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      <span className="text-green-500">已复制!</span>
+                      <span className="text-teal-600 dark:text-teal-400">已复制!</span>
                     </>
                   ) : (
                     <>
@@ -120,10 +111,10 @@ export default function RandomPickup() {
             ) : (
               <div className="text-center py-4">
                 <div className="text-6xl mb-4 animate-bounce-slow">✨</div>
-                <p className="text-zinc-300 text-lg">
+                <p className="text-stone-600 dark:text-stone-300 text-lg">
                   点击下方按钮
                 </p>
-                <p className="text-zinc-500 text-sm mt-1">
+                <p className="text-stone-400 dark:text-stone-500 text-sm mt-1">
                   获取一条甜言蜜语~
                 </p>
               </div>
@@ -134,7 +125,7 @@ export default function RandomPickup() {
 
       {/* Error message */}
       {error && (
-        <div className="mb-4 text-rose-400 text-sm toast-enter">
+        <div className="mb-4 text-red-500 dark:text-red-400 text-sm animate-slide-up">
           {error}
         </div>
       )}
@@ -143,9 +134,9 @@ export default function RandomPickup() {
       <button
         onClick={getRandomPhrase}
         disabled={loading}
-        className="relative z-10 group px-8 py-4 rounded-full bg-gradient-primary
-                   text-white text-lg font-bold shadow-xl
-                   hover:shadow-2xl hover:scale-110
+        className="relative z-10 group px-8 py-4 rounded-full
+                   bg-teal-600 hover:bg-teal-700 dark:bg-teal-700 dark:hover:bg-teal-600
+                   text-white text-lg font-bold shadow-lg hover:shadow-xl
                    disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100
                    transition-all duration-300
                    active:scale-95"
@@ -181,7 +172,7 @@ export default function RandomPickup() {
       </button>
 
       {/* Hint text */}
-      <p className="mt-4 text-zinc-600 text-xs relative z-10">
+      <p className="mt-4 text-stone-400 dark:text-stone-500 text-xs relative z-10">
         每次都是随机的哦~
       </p>
     </div>

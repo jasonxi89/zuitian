@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 interface ChatMessageProps {
   content: string
@@ -7,7 +7,7 @@ interface ChatMessageProps {
   images?: { preview: string }[]
 }
 
-export default function ChatMessage({ content, isUser, isLoading, images }: ChatMessageProps) {
+function ChatMessage({ content, isUser, isLoading, images }: ChatMessageProps) {
   const [copied, setCopied] = useState(false)
 
   const handleCopy = async () => {
@@ -54,12 +54,12 @@ export default function ChatMessage({ content, isUser, isLoading, images }: Chat
 
   if (isLoading) {
     return (
-      <div className="flex justify-start">
+      <div className="flex justify-start" role="status">
         <div className="bubble-ai px-4 py-3 max-w-[80%]">
           <div className="flex items-center gap-1.5">
-            <div className="loading-dot w-2 h-2 bg-primary-400 rounded-full"></div>
-            <div className="loading-dot w-2 h-2 bg-primary-400 rounded-full"></div>
-            <div className="loading-dot w-2 h-2 bg-primary-400 rounded-full"></div>
+            <div className="loading-dot w-2 h-2 bg-teal-500 dark:bg-teal-400 rounded-full"></div>
+            <div className="loading-dot w-2 h-2 bg-teal-500 dark:bg-teal-400 rounded-full"></div>
+            <div className="loading-dot w-2 h-2 bg-teal-500 dark:bg-teal-400 rounded-full"></div>
           </div>
         </div>
       </div>
@@ -67,11 +67,11 @@ export default function ChatMessage({ content, isUser, isLoading, images }: Chat
   }
 
   return (
-    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} group`}>
+    <article className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
       <div
         className={`
           relative max-w-[80%] px-4 py-3
-          ${isUser ? 'bubble-user text-white' : 'bubble-ai text-zinc-200'}
+          ${isUser ? 'bubble-user text-white' : 'bubble-ai'}
         `}
       >
         {/* Uploaded images */}
@@ -81,7 +81,7 @@ export default function ChatMessage({ content, isUser, isLoading, images }: Chat
               <img
                 key={i}
                 src={img.preview}
-                alt="uploaded"
+                alt="聊天截图"
                 className="rounded-lg max-w-[200px] max-h-[200px] object-cover"
               />
             ))}
@@ -97,13 +97,14 @@ export default function ChatMessage({ content, isUser, isLoading, images }: Chat
         {!isUser && content && (
           <button
             onClick={handleCopy}
-            className="absolute -bottom-1 right-2 p-1 rounded-md
-                       opacity-0 group-hover:opacity-100 transition-all duration-200
-                       hover:bg-white/10 text-zinc-500 hover:text-primary-400"
+            className="absolute -bottom-1 right-2 p-2 rounded-md
+                       transition-all duration-200
+                       hover:bg-stone-200/60 dark:hover:bg-stone-700/60
+                       text-stone-400 hover:text-teal-600 dark:text-stone-500 dark:hover:text-teal-400"
             title="复制"
           >
             {copied ? (
-              <svg className="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3.5 h-3.5 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             ) : (
@@ -121,13 +122,15 @@ export default function ChatMessage({ content, isUser, isLoading, images }: Chat
 
         {/* Copied feedback */}
         {copied && (
-          <div className="absolute -top-6 right-0 toast-enter">
-            <span className="bg-green-500 text-white text-xs px-2 py-0.5 rounded-full shadow">
+          <div className="absolute -top-6 right-0 animate-slide-up">
+            <span className="bg-teal-600 text-white text-xs px-2 py-0.5 rounded-full shadow">
               已复制!
             </span>
           </div>
         )}
       </div>
-    </div>
+    </article>
   )
 }
+
+export default React.memo(ChatMessage)

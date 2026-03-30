@@ -88,7 +88,7 @@ describe('ChatMessage', () => {
   it('renders uploaded images for user messages', () => {
     const images = [{ preview: 'data:image/png;base64,abc' }]
     render(<ChatMessage content="look" isUser={true} images={images} />)
-    const img = document.querySelector('img[alt="uploaded"]') as HTMLImageElement
+    const img = document.querySelector('img[alt="聊天截图"]') as HTMLImageElement
     expect(img).toBeInTheDocument()
     expect(img.src).toContain('data:image/png;base64,abc')
   })

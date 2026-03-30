@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom scrollbar */
+/* === Scrollbar === */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -13,75 +13,46 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(99, 102, 241, 0.3);
+  background: rgba(120, 113, 108, 0.25);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(99, 102, 241, 0.5);
+  background: rgba(120, 113, 108, 0.45);
 }
 
-/* Chat scrollbar */
 .chat-scroll::-webkit-scrollbar {
   width: 4px;
 }
 
-.chat-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-
 .chat-scroll::-webkit-scrollbar-thumb {
-  background: rgba(99, 102, 241, 0.2);
+  background: rgba(120, 113, 108, 0.2);
   border-radius: 2px;
 }
 
-/* Gradient backgrounds */
-.bg-gradient-primary {
-  background: linear-gradient(135deg, #6366f1, #4f46e5);
-}
-
-.bg-gradient-soft {
-  background: linear-gradient(135deg, #1a1a2e, #252540);
-}
-
-/* Chat bubble styles */
+/* === Chat Bubbles === */
 .bubble-user {
-  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  background-color: #0d9488; /* teal-600 */
   border-radius: 18px 18px 4px 18px;
+  color: #fff;
+}
+
+html.dark .bubble-user {
+  background-color: #0f766e; /* teal-700 */
 }
 
 .bubble-ai {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: #f5f5f4; /* stone-100 */
   border-radius: 18px 18px 18px 4px;
+  color: #292524; /* stone-800 */
 }
 
-/* Glass morphism */
-.glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+html.dark .bubble-ai {
+  background-color: #292524; /* stone-800 */
+  color: #e7e5e4; /* stone-200 */
 }
 
-.glass-dark {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Card hover effect */
-.card-hover {
-  transition: all 0.3s ease;
-}
-
-.card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.15);
-}
-
-/* Flip animation */
+/* === Flip Card (Random page) === */
 .flip-card {
   perspective: 1000px;
 }
@@ -104,53 +75,7 @@
   transform: rotateY(180deg);
 }
 
-/* Glow orb decoration */
-@keyframes glow-float {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-    opacity: 0.3;
-  }
-  50% {
-    transform: translateY(-20px) scale(1.1);
-    opacity: 0.6;
-  }
-}
-
-.glow-orb {
-  animation: glow-float 4s ease-in-out infinite;
-  border-radius: 50%;
-  filter: blur(40px);
-}
-
-/* Glow border effect */
-.glow-border {
-  position: relative;
-}
-
-.glow-border::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(245, 158, 11, 0.2), rgba(99, 102, 241, 0.3));
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.glow-border:hover::before {
-  opacity: 1;
-}
-
-/* Text gradient */
-.text-gradient {
-  background: linear-gradient(135deg, #818cf8, #f59e0b);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Loading dots */
+/* === Loading Dots === */
 @keyframes dot-pulse {
   0%, 80%, 100% {
     opacity: 0.3;
@@ -174,35 +99,7 @@
   animation-delay: 0.4s;
 }
 
-/* Smooth scroll behavior */
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  background: linear-gradient(135deg, #0f0f1a, #1a1a2e);
-  color: #e4e4e7;
-  min-height: 100vh;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-}
-
-/* Toast animation */
-@keyframes toast-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.toast-enter {
-  animation: toast-in 0.3s ease-out;
-}
-
-/* Category tabs scrollbar hidden */
+/* === Utilities === */
 .hide-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -210,4 +107,20 @@ body {
 
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #fafaf9; /* stone-50 */
+  color: #292524; /* stone-800 */
+  min-height: 100vh;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+html.dark body {
+  background-color: #1c1917; /* stone-900 */
+  color: #e7e5e4; /* stone-200 */
 }

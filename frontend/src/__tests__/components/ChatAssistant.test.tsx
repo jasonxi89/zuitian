@@ -46,7 +46,7 @@ describe('ChatAssistant', () => {
 
     // After typing, find the send button; it should no longer be disabled
     const allButtons = screen.getAllByRole('button')
-    // The send button is the flex-shrink-0 w-12 h-12 rounded-2xl bg-gradient-primary button
+    // The send button is the flex-shrink-0 w-12 h-12 rounded-2xl bg-teal-600 button
     // We check the last button in the input row is no longer disabled
     const enabledButtons = allButtons.filter((btn) => !btn.hasAttribute('disabled') && btn.closest('.flex.gap-2.items-end'))
     expect(enabledButtons.length).toBeGreaterThan(0)
@@ -66,9 +66,9 @@ describe('ChatAssistant', () => {
 
     // Click the send button (it's enabled now)
     const allButtons = screen.getAllByRole('button')
-    // The send button is at end of input row; it has bg-gradient-primary in className
+    // The send button is at end of input row; it has bg-teal-600 in className
     const sendBtn = allButtons.find(
-      (btn) => btn.className.includes('bg-gradient-primary') && btn.className.includes('flex-shrink-0')
+      (btn) => btn.className.includes('bg-teal-600') && btn.className.includes('flex-shrink-0')
     )
     expect(sendBtn).toBeDefined()
     if (sendBtn) await user.click(sendBtn)
@@ -92,7 +92,7 @@ describe('ChatAssistant', () => {
 
     const allButtons = screen.getAllByRole('button')
     const sendBtn = allButtons.find(
-      (btn) => btn.className.includes('bg-gradient-primary') && btn.className.includes('flex-shrink-0')
+      (btn) => btn.className.includes('bg-teal-600') && btn.className.includes('flex-shrink-0')
     )
     if (sendBtn) await user.click(sendBtn)
 
@@ -116,14 +116,14 @@ describe('ChatAssistant', () => {
     const gentleBtn = screen.getByText('温柔型').closest('button')!
     await user.click(gentleBtn)
 
-    // After clicking, the button should have the active class (bg-gradient-primary)
-    expect(gentleBtn.className).toContain('bg-gradient-primary')
+    // After clicking, the button should have the active class (bg-teal-600)
+    expect(gentleBtn.className).toContain('bg-teal-600')
   })
 
   it('humorous style is active by default', () => {
     render(<ChatAssistant />)
     const humorousBtn = screen.getByText('幽默型').closest('button')!
-    expect(humorousBtn.className).toContain('bg-gradient-primary')
+    expect(humorousBtn.className).toContain('bg-teal-600')
   })
 
   it('shows context input field when 添加背景信息 is clicked', async () => {
