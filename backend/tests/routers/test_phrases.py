@@ -125,11 +125,11 @@ def test_list_phrases_response_schema(client, sample_phrases):
     assert "created_at" in phrase
 
 
-def test_list_phrases_ordered_by_id(client, sample_phrases):
+def test_list_phrases_ordered_by_created_at_desc(client, sample_phrases):
     resp = client.get("/api/phrases/?limit=100")
     data = resp.json()
-    ids = [p["id"] for p in data]
-    assert ids == sorted(ids, reverse=True)
+    dates = [p["created_at"] for p in data]
+    assert dates == sorted(dates, reverse=True)
 
 
 def test_random_phrase_returns_one(client, sample_phrases):
