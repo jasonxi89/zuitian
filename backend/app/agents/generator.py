@@ -118,7 +118,7 @@ async def generate_phrases_job():
     try:
         client = anthropic.Anthropic(api_key=CLAUDE_API_KEY)
         response = client.messages.create(
-            model="claude-sonnet-4-6",
+            model="claude-opus-4-7",
             max_tokens=2048,
             messages=[{"role": "user", "content": prompt}],
         )
