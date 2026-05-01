@@ -75,7 +75,7 @@ async def test_generate_phrases_job_success(db):
         {"content": "这是AI生成的第二条新鲜话术哦", "category": "土味情话", "tags": "AI生成"},
     ]
     mock_response = MagicMock()
-    mock_response.content = [MagicMock(text=json.dumps(mock_phrases, ensure_ascii=False))]
+    mock_response.content = [MagicMock(type='text', text=json.dumps(mock_phrases, ensure_ascii=False))]
 
     mock_client = MagicMock()
     mock_client.messages.create.return_value = mock_response

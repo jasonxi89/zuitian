@@ -123,7 +123,7 @@ async def generate_phrases_job():
             messages=[{"role": "user", "content": prompt}],
         )
 
-        raw_text = response.content[0].text.strip()
+        raw_text = next((b.text for b in response.content if getattr(b, "type", None) == "text"), "").strip()
         # Strip markdown code fences if present
         if raw_text.startswith("```"):
             raw_text = raw_text.split("\n", 1)[-1]
