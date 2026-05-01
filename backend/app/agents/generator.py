@@ -8,7 +8,7 @@ from datetime import datetime
 import anthropic
 import httpx
 
-from app.config import CLAUDE_API_KEY
+from app.config import DEEPSEEK_API_KEY, DEEPSEEK_MODEL, DEEPSEEK_BASE_URL
 from app.database import SessionLocal
 from app.agents.utils import save_new_phrases
 
@@ -100,8 +100,8 @@ def _build_prompt(trending: str, date: datetime, categories: list[str], n: int) 
 
 async def generate_phrases_job():
     """Main job entry point — called by scheduler."""
-    if not CLAUDE_API_KEY:
-        logger.warning("CLAUDE_API_KEY not set, skipping phrase generation")
+    if not DEEPSEEK_API_KEY:
+        logger.warning("DEEPSEEK_API_KEY not set, skipping phrase generation")
         return
 
     logger.info("Starting AI phrase generation job")
@@ -116,9 +116,9 @@ async def generate_phrases_job():
     prompt = _build_prompt(trending, now, categories, n_per_category)
 
     try:
-        client = anthropic.Anthropic(api_key=CLAUDE_API_KEY)
+        client = anthropic.Anthropic(api_key=DEEPSEEK_API_KEY, base_url=DEEPSEEK_BASE_URL)
         response = client.messages.create(
-            model="claude-opus-4-7",
+            model=DEEPSEEK_MODEL,
             max_tokens=2048,
             messages=[{"role": "user", "content": prompt}],
         )
@@ -152,6 +152,6 @@ async def generate_phrases_job():
     except json.JSONDecodeError as e:
         logger.error("Failed to parse Claude response as JSON: %s", e)
     except anthropic.APIError as e:
-        logger.error("Claude API error: %s", e)
+        logger.error("DeepSeek API error: %s", e)
     except Exception as e:
         logger.error("Unexpected error in generator: %s", e)
