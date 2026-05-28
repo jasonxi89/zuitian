@@ -1,4 +1,4 @@
-"""AI phrase generator agent — uses Claude Sonnet to generate fresh phrases daily."""
+"""AI phrase generator agent — uses Claude to generate fresh phrases daily."""
 
 import json
 import logging
@@ -8,7 +8,7 @@ from datetime import datetime
 import anthropic
 import httpx
 
-from app.config import DEEPSEEK_API_KEY, DEEPSEEK_MODEL, DEEPSEEK_BASE_URL
+from app.config import ANTHROPIC_API_KEY, ANTHROPIC_MODEL
 from app.database import SessionLocal
 from app.agents.utils import save_new_phrases
 
@@ -100,8 +100,8 @@ def _build_prompt(trending: str, date: datetime, categories: list[str], n: int) 
 
 async def generate_phrases_job():
     """Main job entry point — called by scheduler."""
-    if not DEEPSEEK_API_KEY:
-        logger.warning("DEEPSEEK_API_KEY not set, skipping phrase generation")
+    if not ANTHROPIC_API_KEY:
+        logger.warning("ANTHROPIC_API_KEY not set, skipping phrase generation")
         return
 
     logger.info("Starting AI phrase generation job")
@@ -116,9 +116,9 @@ async def generate_phrases_job():
     prompt = _build_prompt(trending, now, categories, n_per_category)
 
     try:
-        client = anthropic.Anthropic(api_key=DEEPSEEK_API_KEY, base_url=DEEPSEEK_BASE_URL)
+        client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
         response = client.messages.create(
-            model=DEEPSEEK_MODEL,
+            model=ANTHROPIC_MODEL,
             max_tokens=2048,
             messages=[{"role": "user", "content": prompt}],
         )
@@ -152,6 +152,6 @@ async def generate_phrases_job():
     except json.JSONDecodeError as e:
         logger.error("Failed to parse Claude response as JSON: %s", e)
     except anthropic.APIError as e:
-        logger.error("DeepSeek API error: %s", e)
+        logger.error("Anthropic API error: %s", e)
     except Exception as e:
         logger.error("Unexpected error in generator: %s", e)

@@ -46,7 +46,8 @@ services:
       - ./data:/app/data
     environment:
       - TZ=Asia/Shanghai
-      - CLAUDE_API_KEY=your_key_here
+      - ANTHROPIC_API_KEY=your_key_here
+      - ANTHROPIC_MODEL=claude-opus-4-7
     restart: unless-stopped
 ```
 
@@ -131,7 +132,8 @@ services:
       - ./data:/app/data
     environment:
       - TZ=Asia/Shanghai
-      - CLAUDE_API_KEY=your_key_here
+      - ANTHROPIC_API_KEY=your_key_here
+      - ANTHROPIC_MODEL=claude-opus-4-7
     restart: unless-stopped
 ```
 

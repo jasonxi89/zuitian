@@ -39,13 +39,13 @@ def parse_sse_events(text: str) -> list:
 # ---------------------------------------------------------------------------
 
 def test_chat_no_api_key_returns_500(client, monkeypatch):
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "")
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_API_KEY", "")
     resp = client.post("/api/chat", json={"their_message": "hello"})
     assert resp.status_code == 500
 
 
 def test_chat_no_api_key_error_detail(client, monkeypatch):
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "")
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_API_KEY", "")
     resp = client.post("/api/chat", json={"their_message": "hello"})
     data = resp.json()
     assert "detail" in data
@@ -57,7 +57,7 @@ def test_chat_no_api_key_error_detail(client, monkeypatch):
 # ---------------------------------------------------------------------------
 
 def test_chat_empty_message_no_images_returns_error_sse(client, monkeypatch):
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_API_KEY", "test-key")
     resp = client.post("/api/chat", json={"their_message": "", "images": None})
     assert resp.status_code == 200
     events = parse_sse_events(resp.text)
@@ -66,7 +66,7 @@ def test_chat_empty_message_no_images_returns_error_sse(client, monkeypatch):
 
 
 def test_chat_empty_message_no_images_error_message(client, monkeypatch):
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_API_KEY", "test-key")
     resp = client.post("/api/chat", json={"their_message": "   ", "images": None})
     events = parse_sse_events(resp.text)
     error_events = [e for e in events if "error" in e]
@@ -78,7 +78,7 @@ def test_chat_empty_message_no_images_error_message(client, monkeypatch):
 # ---------------------------------------------------------------------------
 
 def test_chat_sse_content_type(client, monkeypatch):
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_API_KEY", "test-key")
     with patch("app.routers.chat.anthropic.Anthropic") as mock_cls:
         mock_client = MagicMock()
         mock_cls.return_value = mock_client
@@ -90,7 +90,7 @@ def test_chat_sse_content_type(client, monkeypatch):
 
 
 def test_chat_sse_done_token_present(client, monkeypatch):
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_API_KEY", "test-key")
     with patch("app.routers.chat.anthropic.Anthropic") as mock_cls:
         mock_client = MagicMock()
         mock_cls.return_value = mock_client
@@ -101,7 +101,7 @@ def test_chat_sse_done_token_present(client, monkeypatch):
 
 
 def test_chat_sse_content_events(client, monkeypatch):
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_API_KEY", "test-key")
     with patch("app.routers.chat.anthropic.Anthropic") as mock_cls:
         mock_client = MagicMock()
         mock_cls.return_value = mock_client
@@ -116,7 +116,7 @@ def test_chat_sse_content_events(client, monkeypatch):
 
 
 def test_chat_sse_done_event_last(client, monkeypatch):
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_API_KEY", "test-key")
     with patch("app.routers.chat.anthropic.Anthropic") as mock_cls:
         mock_client = MagicMock()
         mock_cls.return_value = mock_client
@@ -128,7 +128,7 @@ def test_chat_sse_done_event_last(client, monkeypatch):
 
 
 def test_chat_sse_empty_text_stream(client, monkeypatch):
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_API_KEY", "test-key")
     with patch("app.routers.chat.anthropic.Anthropic") as mock_cls:
         mock_client = MagicMock()
         mock_cls.return_value = mock_client
@@ -144,7 +144,7 @@ def test_chat_sse_empty_text_stream(client, monkeypatch):
 # ---------------------------------------------------------------------------
 
 def _assert_stream_called_with_style(client, monkeypatch, style):
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_API_KEY", "test-key")
     with patch("app.routers.chat.anthropic.Anthropic") as mock_cls:
         mock_client = MagicMock()
         mock_cls.return_value = mock_client
@@ -195,7 +195,7 @@ def test_chat_unknown_style_defaults_to_humorous(client, monkeypatch):
 # ---------------------------------------------------------------------------
 
 def test_chat_context_included_in_prompt(client, monkeypatch):
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_API_KEY", "test-key")
     with patch("app.routers.chat.anthropic.Anthropic") as mock_cls:
         mock_client = MagicMock()
         mock_cls.return_value = mock_client
@@ -213,7 +213,7 @@ def test_chat_context_included_in_prompt(client, monkeypatch):
 
 
 def test_chat_no_context_not_in_prompt(client, monkeypatch):
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_API_KEY", "test-key")
     with patch("app.routers.chat.anthropic.Anthropic") as mock_cls:
         mock_client = MagicMock()
         mock_cls.return_value = mock_client
@@ -232,7 +232,7 @@ def test_chat_no_context_not_in_prompt(client, monkeypatch):
 # ---------------------------------------------------------------------------
 
 def test_chat_with_images_calls_stream(client, monkeypatch):
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_API_KEY", "test-key")
     with patch("app.routers.chat.anthropic.Anthropic") as mock_cls:
         mock_client = MagicMock()
         mock_cls.return_value = mock_client
@@ -247,7 +247,7 @@ def test_chat_with_images_calls_stream(client, monkeypatch):
 
 
 def test_chat_with_images_includes_image_block(client, monkeypatch):
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_API_KEY", "test-key")
     with patch("app.routers.chat.anthropic.Anthropic") as mock_cls:
         mock_client = MagicMock()
         mock_cls.return_value = mock_client
@@ -267,7 +267,7 @@ def test_chat_with_images_includes_image_block(client, monkeypatch):
 
 
 def test_chat_images_placed_before_text(client, monkeypatch):
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_API_KEY", "test-key")
     with patch("app.routers.chat.anthropic.Anthropic") as mock_cls:
         mock_client = MagicMock()
         mock_cls.return_value = mock_client
@@ -285,7 +285,7 @@ def test_chat_images_placed_before_text(client, monkeypatch):
 
 
 def test_chat_with_message_and_image(client, monkeypatch):
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_API_KEY", "test-key")
     with patch("app.routers.chat.anthropic.Anthropic") as mock_cls:
         mock_client = MagicMock()
         mock_cls.return_value = mock_client
@@ -305,11 +305,12 @@ def test_chat_with_message_and_image(client, monkeypatch):
 
 
 # ---------------------------------------------------------------------------
-# Model selection and fallback
+# Model selection
 # ---------------------------------------------------------------------------
 
-def test_chat_uses_sonnet_as_primary_model(client, monkeypatch):
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
+def test_chat_uses_configured_model(client, monkeypatch):
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_API_KEY", "test-key")
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_MODEL", "claude-opus-4-7")
     with patch("app.routers.chat.anthropic.Anthropic") as mock_cls:
         mock_client = MagicMock()
         mock_cls.return_value = mock_client
@@ -317,71 +318,17 @@ def test_chat_uses_sonnet_as_primary_model(client, monkeypatch):
 
         client.post("/api/chat", json={"their_message": "hi"})
         call_kwargs = mock_client.messages.stream.call_args[1]
-        assert call_kwargs["model"] == "claude-opus-4-6"
+        assert call_kwargs["model"] == "claude-opus-4-7"
 
 
-def test_chat_fallback_to_haiku_on_api_error(client, monkeypatch):
+def test_chat_api_error_yields_error_event(client, monkeypatch):
     import anthropic as anthropic_module
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
-    with patch("app.routers.chat.anthropic.Anthropic") as mock_cls:
-        mock_client = MagicMock()
-        mock_cls.return_value = mock_client
-
-        call_count = 0
-
-        def side_effect(**kwargs):
-            nonlocal call_count
-            call_count += 1
-            if call_count == 1:
-                # sonnet fails
-                raise anthropic_module.APIError(
-                    message="overloaded", request=MagicMock(), body=None
-                )
-            # haiku succeeds
-            return make_mock_stream(["fallback"])
-
-        mock_client.messages.stream.side_effect = side_effect
-
-        resp = client.post("/api/chat", json={"their_message": "hello"})
-        assert resp.status_code == 200
-        assert mock_client.messages.stream.call_count == 2
-        # Second call should use haiku
-        second_call_kwargs = mock_client.messages.stream.call_args_list[1][1]
-        assert second_call_kwargs["model"] == "claude-sonnet-4-6"
-
-
-def test_chat_fallback_response_has_done(client, monkeypatch):
-    import anthropic as anthropic_module
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
-    with patch("app.routers.chat.anthropic.Anthropic") as mock_cls:
-        mock_client = MagicMock()
-        mock_cls.return_value = mock_client
-
-        call_count = 0
-
-        def side_effect(**kwargs):
-            nonlocal call_count
-            call_count += 1
-            if call_count == 1:
-                raise anthropic_module.APIError(
-                    message="error", request=MagicMock(), body=None
-                )
-            return make_mock_stream(["success"])
-
-        mock_client.messages.stream.side_effect = side_effect
-
-        resp = client.post("/api/chat", json={"their_message": "hello"})
-        assert "[DONE]" in resp.text
-
-
-def test_chat_both_models_fail_yields_error(client, monkeypatch):
-    import anthropic as anthropic_module
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_API_KEY", "test-key")
     with patch("app.routers.chat.anthropic.Anthropic") as mock_cls:
         mock_client = MagicMock()
         mock_cls.return_value = mock_client
         mock_client.messages.stream.side_effect = anthropic_module.APIError(
-            message="all models failed", request=MagicMock(), body=None
+            message="api failed", request=MagicMock(), body=None
         )
 
         resp = client.post("/api/chat", json={"their_message": "hello"})
@@ -391,9 +338,9 @@ def test_chat_both_models_fail_yields_error(client, monkeypatch):
         assert len(error_events) > 0
 
 
-def test_chat_both_models_fail_no_done_token(client, monkeypatch):
+def test_chat_api_error_no_done_token(client, monkeypatch):
     import anthropic as anthropic_module
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_API_KEY", "test-key")
     with patch("app.routers.chat.anthropic.Anthropic") as mock_cls:
         mock_client = MagicMock()
         mock_cls.return_value = mock_client
@@ -402,7 +349,7 @@ def test_chat_both_models_fail_no_done_token(client, monkeypatch):
         )
 
         resp = client.post("/api/chat", json={"their_message": "hello"})
-        # When both fail, [DONE] is NOT yielded (only error SSE)
+        # When the request fails, [DONE] is NOT yielded (only error SSE)
         assert "[DONE]" not in resp.text
 
 
@@ -411,7 +358,7 @@ def test_chat_both_models_fail_no_done_token(client, monkeypatch):
 # ---------------------------------------------------------------------------
 
 def test_chat_message_included_in_prompt(client, monkeypatch):
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_API_KEY", "test-key")
     with patch("app.routers.chat.anthropic.Anthropic") as mock_cls:
         mock_client = MagicMock()
         mock_cls.return_value = mock_client
@@ -425,7 +372,7 @@ def test_chat_message_included_in_prompt(client, monkeypatch):
 
 
 def test_chat_system_prompt_set(client, monkeypatch):
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_API_KEY", "test-key")
     with patch("app.routers.chat.anthropic.Anthropic") as mock_cls:
         mock_client = MagicMock()
         mock_cls.return_value = mock_client
@@ -438,7 +385,7 @@ def test_chat_system_prompt_set(client, monkeypatch):
 
 
 def test_chat_max_tokens_set(client, monkeypatch):
-    monkeypatch.setattr("app.routers.chat.CLAUDE_API_KEY", "test-key")
+    monkeypatch.setattr("app.routers.chat.ANTHROPIC_API_KEY", "test-key")
     with patch("app.routers.chat.anthropic.Anthropic") as mock_cls:
         mock_client = MagicMock()
         mock_cls.return_value = mock_client
