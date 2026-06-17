@@ -1,9 +1,14 @@
 import json
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
-import anthropic
+from openai import OpenAI
 
-from app.config import ANTHROPIC_API_KEY, ANTHROPIC_MODEL
+from app.config import (
+    OPENROUTER_API_KEY,
+    OPENROUTER_BASE_URL,
+    OPENROUTER_MODEL,
+    OPENROUTER_VISION_MODEL,
+)
 from app.schemas import ChatRequest
 
 router = APIRouter(prefix="/api", tags=["chat"])
@@ -36,7 +41,7 @@ SYSTEM_PROMPT = """你是一个专业的恋爱聊天回复助手，擅长高情�
 
 
 async def stream_chat(request: ChatRequest):
-    if not ANTHROPIC_API_KEY:
+    if not OPENROUTER_API_KEY:
         yield f"data: {json.dumps({'error': 'API key not configured'})}\n\n"
         return
 
@@ -51,12 +56,8 @@ async def stream_chat(request: ChatRequest):
     if request.images:
         for img in request.images:
             content_blocks.append({
-                "type": "image",
-                "source": {
-                    "type": "base64",
-                    "media_type": img.media_type,
-                    "data": img.data,
-                },
+                "type": "image_url",
+                "image_url": {"url": f"data:{img.media_type};base64,{img.data}"},
             })
 
     text_parts = []
@@ -70,26 +71,32 @@ async def stream_chat(request: ChatRequest):
 
     content_blocks.append({"type": "text", "text": "\n".join(text_parts)})
 
-    client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
+    model = OPENROUTER_VISION_MODEL if request.images else OPENROUTER_MODEL
+    client = OpenAI(base_url=OPENROUTER_BASE_URL, api_key=OPENROUTER_API_KEY)
 
     try:
-        with client.messages.stream(
-            model=ANTHROPIC_MODEL,
+        response = client.chat.completions.create(
+            model=model,
             max_tokens=1024,
-            system=SYSTEM_PROMPT,
-            messages=[{"role": "user", "content": content_blocks}],
-        ) as stream:
-            for text in stream.text_stream:
-                yield f"data: {json.dumps({'content': text}, ensure_ascii=False)}\n\n"
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": content_blocks},
+            ],
+            stream=True,
+        )
+        for chunk in response:
+            delta = chunk.choices[0].delta.content if chunk.choices else None
+            if delta:
+                yield f"data: {json.dumps({'content': delta}, ensure_ascii=False)}\n\n"
         yield "data: [DONE]\n\n"
-    except anthropic.APIError as e:
+    except Exception as e:
         yield f"data: {json.dumps({'error': str(e)}, ensure_ascii=False)}\n\n"
 
 
 @router.post("/chat")
 async def chat(request: ChatRequest):
-    if not ANTHROPIC_API_KEY:
-        raise HTTPException(status_code=500, detail="Anthropic API key not configured")
+    if not OPENROUTER_API_KEY:
+        raise HTTPException(status_code=500, detail="OpenRouter API key not configured")
     return StreamingResponse(
         stream_chat(request),
         media_type="text/event-stream",

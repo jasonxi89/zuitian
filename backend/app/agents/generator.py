@@ -1,14 +1,14 @@
-"""AI phrase generator agent — uses Claude to generate fresh phrases daily."""
+"""AI phrase generator agent — uses OpenRouter to generate fresh phrases daily."""
 
 import json
 import logging
 import random
 from datetime import datetime
 
-import anthropic
+from openai import OpenAI
 import httpx
 
-from app.config import ANTHROPIC_API_KEY, ANTHROPIC_MODEL
+from app.config import OPENROUTER_API_KEY, OPENROUTER_BASE_URL, OPENROUTER_MODEL
 from app.database import SessionLocal
 from app.agents.utils import save_new_phrases
 
@@ -100,8 +100,8 @@ def _build_prompt(trending: str, date: datetime, categories: list[str], n: int) 
 
 async def generate_phrases_job():
     """Main job entry point — called by scheduler."""
-    if not ANTHROPIC_API_KEY:
-        logger.warning("ANTHROPIC_API_KEY not set, skipping phrase generation")
+    if not OPENROUTER_API_KEY:
+        logger.warning("OPENROUTER_API_KEY not set, skipping phrase generation")
         return
 
     logger.info("Starting AI phrase generation job")
@@ -116,14 +116,14 @@ async def generate_phrases_job():
     prompt = _build_prompt(trending, now, categories, n_per_category)
 
     try:
-        client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
-        response = client.messages.create(
-            model=ANTHROPIC_MODEL,
+        client = OpenAI(base_url=OPENROUTER_BASE_URL, api_key=OPENROUTER_API_KEY)
+        response = client.chat.completions.create(
+            model=OPENROUTER_MODEL,
             max_tokens=2048,
             messages=[{"role": "user", "content": prompt}],
         )
 
-        raw_text = next((b.text for b in response.content if getattr(b, "type", None) == "text"), "").strip()
+        raw_text = (response.choices[0].message.content or "").strip()
         # Strip markdown code fences if present
         if raw_text.startswith("```"):
             raw_text = raw_text.split("\n", 1)[-1]
@@ -132,7 +132,7 @@ async def generate_phrases_job():
 
         phrases = json.loads(raw_text)
         if not isinstance(phrases, list):
-            logger.error("Claude returned non-list: %s", type(phrases))
+            logger.error("Model returned non-list: %s", type(phrases))
             return
 
         # Filter valid entries
@@ -150,8 +150,6 @@ async def generate_phrases_job():
             db.close()
 
     except json.JSONDecodeError as e:
-        logger.error("Failed to parse Claude response as JSON: %s", e)
-    except anthropic.APIError as e:
-        logger.error("Anthropic API error: %s", e)
+        logger.error("Failed to parse model response as JSON: %s", e)
     except Exception as e:
         logger.error("Unexpected error in generator: %s", e)
