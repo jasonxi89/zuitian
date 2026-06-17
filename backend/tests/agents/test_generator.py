@@ -63,25 +63,25 @@ def test_save_new_phrases_skips_empty(db):
 @pytest.mark.asyncio
 async def test_generate_phrases_job_no_api_key():
     """Should exit gracefully when no API key is set."""
-    with patch("app.agents.generator.ANTHROPIC_API_KEY", ""):
+    with patch("app.agents.generator.OPENROUTER_API_KEY", ""):
         await generate_phrases_job()  # Should not raise
 
 
 @pytest.mark.asyncio
 async def test_generate_phrases_job_success(db):
-    """Mock Claude API and verify phrases are saved."""
+    """Mock OpenAI client and verify phrases are saved."""
     mock_phrases = [
         {"content": "这是AI生成的第一条新鲜话术哦", "category": "开场白", "tags": "AI生成"},
         {"content": "这是AI生成的第二条新鲜话术哦", "category": "土味情话", "tags": "AI生成"},
     ]
     mock_response = MagicMock()
-    mock_response.content = [MagicMock(type='text', text=json.dumps(mock_phrases, ensure_ascii=False))]
+    mock_response.choices = [MagicMock(message=MagicMock(content=json.dumps(mock_phrases, ensure_ascii=False)))]
 
     mock_client = MagicMock()
-    mock_client.messages.create.return_value = mock_response
+    mock_client.chat.completions.create.return_value = mock_response
 
-    with patch("app.agents.generator.ANTHROPIC_API_KEY", "test-key"), \
-         patch("app.agents.generator.anthropic.Anthropic", return_value=mock_client), \
+    with patch("app.agents.generator.OPENROUTER_API_KEY", "test-key"), \
+         patch("app.agents.generator.OpenAI", return_value=mock_client), \
          patch("app.agents.generator._fetch_trending_topics", return_value="- 测试热点"), \
          patch("app.agents.generator.SessionLocal", return_value=db):
         await generate_phrases_job()
