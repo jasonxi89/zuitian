@@ -2,7 +2,6 @@ import json
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 from openai import OpenAI
-import openai
 
 from app.config import (
     OPENROUTER_API_KEY,

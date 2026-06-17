@@ -6,7 +6,6 @@ import random
 from datetime import datetime
 
 from openai import OpenAI
-import openai
 import httpx
 
 from app.config import OPENROUTER_API_KEY, OPENROUTER_BASE_URL, OPENROUTER_MODEL
