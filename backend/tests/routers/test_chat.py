@@ -373,4 +373,4 @@ def test_chat_max_tokens_set(client, monkeypatch):
         mock_cls.return_value = mock_openai
         client.post("/api/chat", json={"their_message": "hi"})
         call_kwargs = mock_openai.chat.completions.create.call_args[1]
-        assert call_kwargs["max_tokens"] == 1024
+        assert call_kwargs["max_tokens"] == 4096
