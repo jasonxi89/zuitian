@@ -1,5 +1,5 @@
 # HANDOFF — 嘴甜 (zuitian)
-> 跨 agent/IDE 接手文档 | 最后更新: 2026-07-17 | 改动项目后请同步更新此文档
+> 跨 agent/IDE 接手文档 | 最后更新: 2026-08-22 | 改动项目后请同步更新此文档
 
 ## 项目定位
 面向公众的 Web App：话术库 + AI 高情商回复助手 + 随机土味情话，帮用户在聊天中快速找到合适的话。
@@ -7,15 +7,15 @@ React + FastAPI 单体应用，前端构建产物由后端直接 serve。部署�
 GitHub: `jasonxi89/zuitian`，本地路径 `C:\Users\goodb\rizz-app`。
 
 ## 当前状态
-- 版本 **v2.0.0**（唯一版本号来源：`frontend/package.json`；后端无 APP_VERSION）
-- 最新 commit `984b5ff`（2026-06-16，迁移到 OpenRouter 统一网关），分支 **main**（已无 master）
-- AI 走 **OpenRouter**（openai SDK）：纯文字用 `deepseek/deepseek-v4-pro`，带图请求用 `anthropic/claude-opus-4.8`
+- 版本 **v2.0.1**（唯一版本号来源：`frontend/package.json`；后端无 APP_VERSION）
+- 最新 commit `9a89743`（2026-08-22，带图 max_tokens 4096 适配 vision-exp thinking），分支 **main**（已无 master），NAS 部署同此 SHA
+- AI 走 **DeepSeek 官网直连**（2026-08-22 切，openai SDK，`OPENROUTER_BASE_URL=https://api.deepseek.com`）：纯文字用 `deepseek-v4-pro`，带图请求用 `deepseek-v4-flash-vision-exp`（8/21 发布的实验版多模态，实测读 1170×2532 聊天长截图无误）；模型名直连**不带** `deepseek/` 前缀；不再走 OpenRouter
 - 已上线 NAS 8901；CI（GitHub Actions）test 门控 → 构建推 DockerHub（latest + commit SHA tag）
 - 测试：后端 pytest（CI 覆盖率门槛 85%），前端 vitest（含 coverage）
 
 ## 技术栈与结构
 - 前端：React 18 + Vite 6 + TailwindCSS 3 + TypeScript
-- 后端：FastAPI + SQLAlchemy + SQLite；AI 用 openai SDK（`base_url=https://openrouter.ai/api/v1`）
+- 后端：FastAPI + SQLAlchemy + SQLite；AI 用 openai SDK（`base_url` 由 `OPENROUTER_BASE_URL` env 决定，线上为 `https://api.deepseek.com`，代码默认仍是 OpenRouter）
 ```
 rizz-app/
 ├── frontend/          # React SPA
@@ -55,7 +55,8 @@ docker compose up -d --build          # 访问 http://localhost:8901
 
 ## 约定与坑
 - **commit 不加 Co-Authored-By 行**，不把 Claude 写进 contributor 列表
-- **切 AI 模型**：改 NAS compose 的 `OPENROUTER_MODEL`（文字）/ `OPENROUTER_VISION_MODEL`（带图）env 后 recreate；不改代码
+- **切 AI 模型**：改 NAS compose 的 `OPENROUTER_MODEL`（文字）/ `OPENROUTER_VISION_MODEL`（带图）env 后 recreate；不改代码。回滚带图到 Claude：`OPENROUTER_VISION_MODEL=anthropic/claude-opus-4.8` + `OPENROUTER_BASE_URL` 改回 OpenRouter + 换回 OpenRouter key（备份在 `zuitian.yaml.bak.preds-direct`）
+- **DeepSeek vision-exp 是 thinking 模型**：reasoning 占 completion tokens（实测截图场景 ~2400），`max_tokens` 太小会被推理吃光导致**正文为空**（1024 时全空，现已用 4096）
 - **NAS 部署**：image 必须用 commit SHA tag，**绝不用 `:latest`**（registry mirror 会缓存旧 manifest）；zuitian 与 daodichishayou-backend **共用 `-p compose_config` project**，`up -d` 时要带两个 `-f`（否则产生孤儿容器）
 - **每次功能更新必须 bump 版本**：改 `frontend/package.json` version（semver：新功能 +minor，fix +patch）
 - **API 路径带尾斜杠**：如 `/api/phrases/`（SPA catch-all 会抢无尾斜杠的路由）
