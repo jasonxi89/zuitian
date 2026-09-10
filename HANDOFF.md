@@ -7,9 +7,9 @@ React + FastAPI 单体应用，前端构建产物由后端直接 serve。部署�
 GitHub: `jasonxi89/zuitian`，本地路径 `C:\Users\goodb\rizz-app`。
 
 ## 当前状态
-- 版本 **v2.0.2**（唯一版本号来源：`frontend/package.json`；后端无 APP_VERSION）
-- 最新 commit = main HEAD（2026-09-10，文字/带图统一切 `deepseek-flash`，chat/generator max_tokens 提到 8192），分支 **main**（已无 master），NAS 部署同此 SHA；上一版 `9a89743`（v2.0.1）compose 备份 `zuitian.yaml.bak.pre-flash`
-- AI 走 **DeepSeek 官网直连**（openai SDK，`OPENROUTER_BASE_URL=https://api.deepseek.com`）：**2026-09-10 起文字和带图统一用 `deepseek-flash`**（= DeepSeek-V4.1-Flash，原生多模态、默认 thinking；`deepseek-v4-flash-vision-exp` 已退役仅临时转发到它，`deepseek-v4-pro` 官方 9/14 起也路由到它）；reasoning 计入 max_tokens，chat/generator 已提到 8192；模型名直连**不带** `deepseek/` 前缀；不再走 OpenRouter
+- 版本 **v2.0.3**（唯一版本号来源：`frontend/package.json`；后端无 APP_VERSION）
+- 最新 commit = main HEAD（2026-09-10，文字/带图统一切 `deepseek-flash`，chat/generator max_tokens 提到 16384（留足余量）），分支 **main**（已无 master），NAS 部署同此 SHA；上一版 `9a89743`（v2.0.1）compose 备份 `zuitian.yaml.bak.pre-flash`
+- AI 走 **DeepSeek 官网直连**（openai SDK，`OPENROUTER_BASE_URL=https://api.deepseek.com`）：**2026-09-10 起文字和带图统一用 `deepseek-flash`**（= DeepSeek-V4.1-Flash，原生多模态、默认 thinking；`deepseek-v4-flash-vision-exp` 已退役仅临时转发到它，`deepseek-v4-pro` 官方 9/14 起也路由到它）；reasoning 计入 max_tokens，chat/generator 已提到 16384；模型名直连**不带** `deepseek/` 前缀；不再走 OpenRouter
 - 已上线 NAS 8901；CI（GitHub Actions）test 门控 → 构建推 DockerHub（latest + commit SHA tag）
 - 测试：后端 pytest（CI 覆盖率门槛 85%），前端 vitest（含 coverage）
 

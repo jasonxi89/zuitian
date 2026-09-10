@@ -77,7 +77,7 @@ async def stream_chat(request: ChatRequest):
     try:
         response = client.chat.completions.create(
             model=model,
-            max_tokens=8192,
+            max_tokens=16384,
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": content_blocks},
