@@ -119,7 +119,7 @@ async def generate_phrases_job():
         client = OpenAI(base_url=OPENROUTER_BASE_URL, api_key=OPENROUTER_API_KEY)
         response = client.chat.completions.create(
             model=OPENROUTER_MODEL,
-            max_tokens=2048,
+            max_tokens=8192,
             messages=[{"role": "user", "content": prompt}],
         )
 

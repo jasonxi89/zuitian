@@ -1,5 +1,5 @@
 # HANDOFF — 嘴甜 (zuitian)
-> 跨 agent/IDE 接手文档 | 最后更新: 2026-08-22 | 改动项目后请同步更新此文档
+> 跨 agent/IDE 接手文档 | 最后更新: 2026-09-10 | 改动项目后请同步更新此文档
 
 ## 项目定位
 面向公众的 Web App：话术库 + AI 高情商回复助手 + 随机土味情话，帮用户在聊天中快速找到合适的话。
@@ -7,15 +7,15 @@ React + FastAPI 单体应用，前端构建产物由后端直接 serve。部署�
 GitHub: `jasonxi89/zuitian`，本地路径 `C:\Users\goodb\rizz-app`。
 
 ## 当前状态
-- 版本 **v2.0.1**（唯一版本号来源：`frontend/package.json`；后端无 APP_VERSION）
-- 最新 commit `9a89743`（2026-08-22，带图 max_tokens 4096 适配 vision-exp thinking），分支 **main**（已无 master），NAS 部署同此 SHA
-- AI 走 **DeepSeek 官网直连**（2026-08-22 切，openai SDK，`OPENROUTER_BASE_URL=https://api.deepseek.com`）：纯文字用 `deepseek-v4-pro`，带图请求用 `deepseek-v4-flash-vision-exp`（8/21 发布的实验版多模态，实测读 1170×2532 聊天长截图无误）；模型名直连**不带** `deepseek/` 前缀；不再走 OpenRouter
+- 版本 **v2.0.2**（唯一版本号来源：`frontend/package.json`；后端无 APP_VERSION）
+- 最新 commit = main HEAD（2026-09-10，文字/带图统一切 `deepseek-flash`，chat/generator max_tokens 提到 8192），分支 **main**（已无 master），NAS 部署同此 SHA；上一版 `9a89743`（v2.0.1）compose 备份 `zuitian.yaml.bak.pre-flash`
+- AI 走 **DeepSeek 官网直连**（openai SDK，`OPENROUTER_BASE_URL=https://api.deepseek.com`）：**2026-09-10 起文字和带图统一用 `deepseek-flash`**（= DeepSeek-V4.1-Flash，原生多模态、默认 thinking；`deepseek-v4-flash-vision-exp` 已退役仅临时转发到它，`deepseek-v4-pro` 官方 9/14 起也路由到它）；reasoning 计入 max_tokens，chat/generator 已提到 8192；模型名直连**不带** `deepseek/` 前缀；不再走 OpenRouter
 - 已上线 NAS 8901；CI（GitHub Actions）test 门控 → 构建推 DockerHub（latest + commit SHA tag）
 - 测试：后端 pytest（CI 覆盖率门槛 85%），前端 vitest（含 coverage）
 
 ## 技术栈与结构
 - 前端：React 18 + Vite 6 + TailwindCSS 3 + TypeScript
-- 后端：FastAPI + SQLAlchemy + SQLite；AI 用 openai SDK（`base_url` 由 `OPENROUTER_BASE_URL` env 决定，线上为 `https://api.deepseek.com`，代码默认仍是 OpenRouter）
+- 后端：FastAPI + SQLAlchemy + SQLite；AI 用 openai SDK（`base_url` 由 `OPENROUTER_BASE_URL` env 决定，线上为 `https://api.deepseek.com`，2026-09-10 起代码默认值也是 DeepSeek 直连 + `deepseek-flash`）
 ```
 rizz-app/
 ├── frontend/          # React SPA
