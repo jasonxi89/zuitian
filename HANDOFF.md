@@ -1,5 +1,5 @@
 # HANDOFF — 嘴甜 (zuitian)
-> 跨 agent/IDE 接手文档 | 最后更新: 2026-09-10 | 改动项目后请同步更新此文档
+> 跨 agent/IDE 接手文档 | 最后更新: 2026-11-10 | 改动项目后请同步更新此文档
 
 ## 项目定位
 面向公众的 Web App：话术库 + AI 高情商回复助手 + 随机土味情话，帮用户在聊天中快速找到合适的话。
@@ -7,8 +7,9 @@ React + FastAPI 单体应用，前端构建产物由后端直接 serve。部署�
 GitHub: `jasonxi89/zuitian`，本地路径 `C:\Users\goodb\rizz-app`。
 
 ## 当前状态
-- 版本 **v2.0.3**（唯一版本号来源：`frontend/package.json`；后端无 APP_VERSION）
-- 最新 commit = main HEAD（2026-09-10，文字/带图统一切 `deepseek-flash`，chat/generator max_tokens 提到 16384（留足余量）），分支 **main**（已无 master），NAS 部署同此 SHA；上一版 `9a89743`（v2.0.1）compose 备份 `zuitian.yaml.bak.pre-flash`
+- 版本 **v2.0.4**（唯一版本号来源：`frontend/package.json`；后端无 APP_VERSION）
+- 最新 commit = main HEAD（2026-11-10，v2.0.4 删除网络爬取任务），分支 **main**（已无 master），NAS 部署同此 SHA；上一版 `b2300ee`（v2.0.3，2026-09-10 统一切 `deepseek-flash`）compose 备份 `zuitian.yaml.bak.pre-v204`
+- 每日话术更新只剩 **AI 生成**（每天 08:00 Asia/Shanghai，`agents/generator.py`）；**网络爬取任务已在 v2.0.4 删除**（2026-11-10）：三个源站全部失效，上线以来没有入库过一条，`beautifulsoup4` 依赖一并移除，不要再加回来
 - AI 走 **DeepSeek 官网直连**（openai SDK，`OPENROUTER_BASE_URL=https://api.deepseek.com`）：**2026-09-10 起文字和带图统一用 `deepseek-flash`**（= DeepSeek-V4.1-Flash，原生多模态、默认 thinking；`deepseek-v4-flash-vision-exp` 已退役仅临时转发到它，`deepseek-v4-pro` 官方 9/14 起也路由到它）；reasoning 计入 max_tokens，chat/generator 已提到 16384；模型名直连**不带** `deepseek/` 前缀；不再走 OpenRouter
 - 已上线 NAS 8901；CI（GitHub Actions）test 门控 → 构建推 DockerHub（latest + commit SHA tag）
 - 测试：后端 pytest（CI 覆盖率门槛 85%），前端 vitest（含 coverage）
@@ -29,8 +30,8 @@ rizz-app/
 │   ├── routers/
 │   │   ├── phrases.py        # 话术 CRUD
 │   │   └── chat.py           # AI 聊天 SSE 流式 + 模型路由（带图→vision 模型）
-│   ├── agents/               # 每日话术更新（generator 生成 / scraper 爬取 / utils 去重）
-│   ├── scheduler.py          # APScheduler 定时任务
+│   ├── agents/               # 每日话术更新（generator AI 生成 / utils 去重）
+│   ├── scheduler.py          # APScheduler 定时任务（每天 08:00 AI 生成）
 │   └── seed_data.py          # 种子话术
 ├── Dockerfile               # multi-stage: node build → python runtime
 ├── docker-compose.yml       # 本地用（image 为 :latest）
@@ -69,6 +70,7 @@ docker compose up -d --build          # 访问 http://localhost:8901
 - [ ] 用户自定义话术（添加/收藏）
 - [ ] 聊天历史持久化（LocalStorage）
 - [ ] 更多话术数据 / 分享功能
+- [ ] **generator 无重试**：模型返回的 JSON 解析失败时当天直接放弃（2026-09-10 至 11-10 有 3 天因此没有新增），可加 JSON 截取容错 + 重试
 - [ ] **文档欠债**：`README.md` 仍写「Claude API (Sonnet)」和 `ANTHROPIC_API_KEY/MODEL`，已随 OpenRouter 迁移过时，需更新
 - [ ] **元数据欠债**：`backend/app/main.py` 的 FastAPI `title="撩妹话术 API"`、`version="1.0.0"` 已过时；`/api/health` 只返回 `{"status":"ok"}` 不含版本，NAS 验证只能靠镜像 SHA / 容器日志
 
